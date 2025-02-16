@@ -10,7 +10,7 @@ RUN go install honnef.co/go/tools/cmd/staticcheck@latest
 
 COPY go.mod go.sum ./
 
-RUN go mod download
+RUN go mod tidy && go mod download
 
 # Copy the rest of the application code
 COPY . .

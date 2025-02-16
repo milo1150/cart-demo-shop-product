@@ -1,5 +1,24 @@
 services:
+  postgres:
+    image: postgres:17.3
+    container_name: postgres-cart-demo
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+    ports:
+      - ${DATABASE_HOST_PORT}:${DATABASE_DOCKER_PORT}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
   web:
+    container_name: web-cart-demo
     build:
       context: .
       dockerfile: Dockerfile
@@ -8,3 +27,9 @@ services:
     # Important to bind/mount your codebase dir to /app dir for live reload
     volumes:
       - ./:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
