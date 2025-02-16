@@ -1,0 +1,10 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:1323
+    # Important to bind/mount your codebase dir to /app dir for live reload
+    volumes:
+      - ./:/app
