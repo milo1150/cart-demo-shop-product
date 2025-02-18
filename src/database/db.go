@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"minicart/src/model"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -26,4 +27,13 @@ func ConnectDatabase() *gorm.DB {
 	}
 
 	return db
+}
+
+func RunAutoMigrate(db *gorm.DB) {
+	db.AutoMigrate(
+		&model.ProductCategory{},
+		&model.Product{},
+		&model.Shop{},
+		&model.Coupon{},
+	)
 }
