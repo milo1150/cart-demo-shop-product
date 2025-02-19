@@ -1,10 +1,10 @@
 package main
 
 import (
-	"minicart/src/database"
-	"minicart/src/loader"
-	"minicart/src/route"
-	"minicart/src/types"
+	"minicart/internal/database"
+	"minicart/internal/loader"
+	"minicart/internal/routes"
+	"minicart/internal/types"
 
 	"github.com/labstack/echo/v4"
 )
@@ -22,11 +22,12 @@ func main() {
 		DB: db,
 	}
 
+	// Creates an instance of Echo.
 	e := echo.New()
 
-	// Main route
-	route := &route.AppRoute{Echo: e, AppState: appState}
-	route.RegisterAppRoutes()
+	// Init Route
+	routes := &routes.AppRoute{Echo: e, AppState: appState}
+	routes.RegisterAppRoutes()
 
 	// Start Server
 	e.Logger.Fatal(e.Start(":1323"))

@@ -1,8 +1,8 @@
-package route
+package routes
 
 import (
-	"minicart/src/handler"
-	"minicart/src/types"
+	handler "minicart/internal/api"
+	"minicart/internal/types"
 
 	"github.com/labstack/echo/v4"
 )
@@ -14,7 +14,7 @@ type AppRoute struct {
 
 func (r *AppRoute) RegisterAppRoutes() {
 	r.shopRoutes()
-	r.couponRoutes()
+	// r.couponRoutes()
 }
 
 func (r *AppRoute) shopRoutes() {
@@ -24,9 +24,9 @@ func (r *AppRoute) shopRoutes() {
 	})
 }
 
-func (r *AppRoute) couponRoutes() {
-	couponGroup := r.Echo.Group("/coupon")
-	couponGroup.POST("/create", func(c echo.Context) error {
-		return nil
-	})
-}
+// func (r *AppRoute) couponRoutes() {
+// 	couponGroup := r.Echo.Group("/coupon")
+// 	couponGroup.POST("/create", func(c echo.Context) error {
+// 		return nil
+// 	})
+// }
