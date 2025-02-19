@@ -18,13 +18,13 @@ services:
   web:
     container_name: web-cart-demo
     build:
-      context: ../../../
-      dockerfile: internal/deployments/dev/Dockerfile
+      context: ../../
+      dockerfile: deployments/dev/Dockerfile
     ports:
       - 8080:1323
     # Important to bind/mount your codebase dir to /app dir for live reload
     volumes:
-      - ../../../:/app
+      - ../../:/app
     depends_on:
       postgres:
         condition: service_healthy

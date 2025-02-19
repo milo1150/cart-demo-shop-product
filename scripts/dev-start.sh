@@ -20,4 +20,4 @@ else
 fi
 
 # Run Docker Compose with the correct environment
-docker-compose -f ../internal/deployments/dev/docker-compose.yaml up
+docker-compose -f ../deployments/dev/docker-compose.yaml up
