@@ -5,8 +5,8 @@
 - Create .env file with this config in root directory.
 
 ```bash
-HOST=postgres-cart-demo
 APP_ENV=development
+DATABASE_HOST=postgres-cart-demo
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
 DATABASE_NAME=cartdb

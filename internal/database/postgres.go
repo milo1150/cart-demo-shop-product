@@ -12,7 +12,7 @@ import (
 
 func ConnectDatabase() *gorm.DB {
 	// Load env
-	host := os.Getenv("HOST")
+	host := os.Getenv("DATABASE_HOST")
 	user := os.Getenv("DATABASE_USER")
 	pwd := os.Getenv("DATABASE_PASSWORD")
 	name := os.Getenv("DATABASE_NAME")
