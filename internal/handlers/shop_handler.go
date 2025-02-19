@@ -1,4 +1,4 @@
-package handler
+package handlers
 
 import (
 	"minicart/internal/schemas"
