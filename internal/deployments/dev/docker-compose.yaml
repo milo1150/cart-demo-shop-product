@@ -2,8 +2,6 @@ services:
   postgres:
     image: postgres:17.3
     container_name: postgres-cart-demo
-    env_file:
-      - .env
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_USER: ${DATABASE_USER}
@@ -20,13 +18,13 @@ services:
   web:
     container_name: web-cart-demo
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../../../
+      dockerfile: internal/deployments/dev/Dockerfile
     ports:
       - 8080:1323
     # Important to bind/mount your codebase dir to /app dir for live reload
     volumes:
-      - ./:/app
+      - ../../../:/app
     depends_on:
       postgres:
         condition: service_healthy

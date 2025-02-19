@@ -1,9 +1,43 @@
 # Guide
 
+## How to run Dev
+
+- Create .env file with this config in root directory.
+
+```bash
+HOST=postgres-cart-demo
+APP_ENV=development
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
+DATABASE_NAME=cartdb
+DATABASE_HOST_PORT=5432
+DATABASE_DOCKER_PORT=5432
+TIMEZONE=UTC
+LOCAL_TIMEZONE=Asis/Shanghai
+```
+
+- For first time.
+
+```bash
+cd scripts && chmod +x dev-start.sh && ./dev-start.sh
+```
+
+- Later
+
+```bash
+cd scripts && ./dev-start.sh
+```
+
 ## Database CLI
 
 ```bash
 pgcli postgres://postgres:postgres@127.0.0.1:5432/cartdb
+```
+
+## Debug docker build (Dev)
+
+```bash
+docker-compose -f internal/deployments/dev/docker-compose.yaml build --progress=plain --no-cache
 ```
 
 ## Folder Structure
