@@ -1,5 +1,5 @@
 package schemas
 
 type CreateShop struct {
-	Name string `json:"shop_name"`
+	ShopName string `json:"shop_name" validate:"required"`
 }
