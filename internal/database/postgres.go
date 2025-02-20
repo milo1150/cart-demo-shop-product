@@ -30,10 +30,12 @@ func ConnectDatabase() *gorm.DB {
 }
 
 func RunAutoMigrate(db *gorm.DB) {
+	// Shop should be created first since Product and Coupon reference it via ShopID
+	// Product must exist before ProductCategory, because ProductCategory has a many-to-many relationship with Product
 	db.AutoMigrate(
 		&models.Shop{},
 		&models.Product{},
-		&models.ProductCategory{},
 		&models.Coupon{},
+		&models.ProductCategory{},
 	)
 }
