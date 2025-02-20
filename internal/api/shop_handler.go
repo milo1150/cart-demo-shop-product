@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
 	"minicart/internal/schemas"
@@ -11,6 +11,5 @@ import (
 func CreateShopHandler(c echo.Context, appState *types.AppState) error {
 	payload := schemas.CreateShop{}
 	c.Bind(&payload)
-	// result := repository.CreateShop(appState.DB)
 	return c.JSON(http.StatusOK, http.StatusOK)
 }

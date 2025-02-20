@@ -1,6 +1,8 @@
 package types
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type AppState struct {
 	DB *gorm.DB

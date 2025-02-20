@@ -26,8 +26,7 @@ func main() {
 	e := echo.New()
 
 	// Init Route
-	routes := &routes.AppRoute{Echo: e, AppState: appState}
-	routes.RegisterAppRoutes()
+	routes.RegisterAppRoutes(e, appState)
 
 	// Start Server
 	e.Logger.Fatal(e.Start(":1323"))
