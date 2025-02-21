@@ -31,3 +31,12 @@ func CreateShop(db *gorm.DB, payload *schemas.CreateShop, uuid uuid.UUID) error 
 
 	return nil
 }
+
+func GetShopDetail(db *gorm.DB, shopUuid uuid.UUID) (*models.Shop, error) {
+	shop := &models.Shop{}
+	if err := db.Preload("Products").First(shop, "uuid = ?", shopUuid).Error; err != nil {
+		return nil, err
+	}
+
+	return shop, nil
+}

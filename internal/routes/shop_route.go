@@ -13,4 +13,8 @@ func ShopRoutes(e *echo.Echo, appState *types.AppState) {
 	shopGroup.POST("/create", func(c echo.Context) error {
 		return api.CreateShopHandler(c, appState)
 	})
+
+	shopGroup.GET("/:uuid", func(c echo.Context) error {
+		return api.GetShopDetailHandler(c, appState)
+	})
 }

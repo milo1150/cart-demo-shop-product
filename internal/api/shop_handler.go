@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -30,4 +31,20 @@ func CreateShopHandler(c echo.Context, appState *types.AppState) error {
 	}
 
 	return c.JSON(http.StatusOK, http.StatusOK)
+}
+
+func GetShopDetailHandler(c echo.Context, appState *types.AppState) error {
+	shopUuid, err := uuid.Parse(c.Param("uuid"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, utils.GetSimpleErrorMessage("Invalid shop id"))
+	}
+
+	shopService := services.ShopService{DB: appState.DB}
+
+	shop, err := shopService.GetShopDetail(shopUuid)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, utils.GetSimpleErrorMessage(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, shop)
 }
