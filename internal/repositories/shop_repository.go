@@ -8,6 +8,13 @@ import (
 	"gorm.io/gorm"
 )
 
+func FindShop(db *gorm.DB, shopId uint) error {
+	if err := db.First(&models.Shop{}, shopId).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func CreateShop(db *gorm.DB, payload *schemas.CreateShop, uuid uuid.UUID) error {
 	shop := models.Shop{
 		Name: payload.ShopName,

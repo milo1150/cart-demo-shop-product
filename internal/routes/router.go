@@ -8,4 +8,5 @@ import (
 
 func RegisterAppRoutes(e *echo.Echo, appState *types.AppState) {
 	ShopRoutes(e, appState)
+	ProductRoutes(e, appState)
 }

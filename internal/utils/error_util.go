@@ -13,3 +13,7 @@ func TranslateErrors(errors validator.ValidationErrors) map[string]string {
 	}
 	return errorMessage
 }
+
+func GetSimpleErrorMessage(msg string) map[string]string {
+	return map[string]string{"error": msg}
+}

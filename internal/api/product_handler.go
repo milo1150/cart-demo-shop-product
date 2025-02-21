@@ -12,9 +12,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func CreateShopHandler(c echo.Context, appState *types.AppState) error {
-	payload := &schemas.CreateShop{}
-
+func CreateProductHandler(c echo.Context, appState *types.AppState) error {
+	payload := &schemas.CreateProductSchema{}
 	if err := c.Bind(payload); err != nil {
 		return c.JSON(http.StatusBadRequest, utils.GetSimpleErrorMessage(err.Error()))
 	}
@@ -24,8 +23,8 @@ func CreateShopHandler(c echo.Context, appState *types.AppState) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	shopService := services.ShopService{DB: appState.DB}
-	if err := shopService.CreateShop(payload); err != nil {
+	productService := services.ProductService{DB: appState.DB}
+	if err := productService.CreateProduct(payload); err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.GetSimpleErrorMessage(err.Error()))
 	}
 

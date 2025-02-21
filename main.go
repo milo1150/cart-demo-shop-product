@@ -3,6 +3,7 @@ package main
 import (
 	"minicart/internal/database"
 	"minicart/internal/loader"
+	"minicart/internal/middlewares"
 	"minicart/internal/routes"
 	"minicart/internal/types"
 
@@ -24,6 +25,9 @@ func main() {
 
 	// Creates an instance of Echo.
 	e := echo.New()
+
+	// Middlewares
+	middlewares.RegisterMiddlewares(e)
 
 	// Init Route
 	routes.RegisterAppRoutes(e, appState)
