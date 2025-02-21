@@ -8,11 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func FindShop(db *gorm.DB, shopId uint) error {
-	if err := db.First(&models.Shop{}, shopId).Error; err != nil {
-		return err
+func ShopExists(db *gorm.DB, shopId uint) (bool, error) {
+	var count int64
+
+	// More efficient because COUNT(*) is faster than loading a full row.
+	// Prevents unnecessary data fetching (no need to load an entire Shop record).
+	if err := db.Model(&models.Shop{}).Where("id = ?", shopId).Count(&count).Error; err != nil {
+		return false, err
 	}
-	return nil
+	return count > 0, nil
 }
 
 func CreateShop(db *gorm.DB, payload *schemas.CreateShop, uuid uuid.UUID) error {

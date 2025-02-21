@@ -19,7 +19,8 @@ func (p *ProductService) CreateProduct(payload *schemas.CreateProductSchema) err
 		return err
 	}
 
-	if err := repositories.FindShop(p.DB, payload.ShopId); err != nil {
+	shopExists, err := repositories.ShopExists(p.DB, payload.ShopId)
+	if !shopExists || err != nil {
 		return errors.New("invalid shop")
 	}
 
