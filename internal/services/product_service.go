@@ -24,7 +24,8 @@ func (p *ProductService) CreateProduct(payload *schemas.CreateProductSchema) err
 		return errors.New("invalid shop")
 	}
 
-	if err := repositories.CreateProduct(p.DB, payload, uuidV7); err != nil {
+	productRepository := repositories.ProductRepository{DB: p.DB}
+	if err := productRepository.CreateProduct(payload, uuidV7); err != nil {
 		return err
 	}
 

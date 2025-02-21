@@ -14,7 +14,7 @@ type ProductDTO struct {
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Price       float32   `json:"price"`
-	Stock       uint32    `json:"stock"`
+	Stock       uint      `json:"stock"`
 }
 
 func TransformProductDTO(productModel *models.Product) ProductDTO {

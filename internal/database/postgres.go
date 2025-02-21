@@ -35,6 +35,7 @@ func RunAutoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
 		&models.Shop{},
 		&models.Product{},
+		&models.Stock{},
 		&models.Coupon{},
 		&models.ProductCategory{},
 	)
