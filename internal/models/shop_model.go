@@ -11,7 +11,6 @@ type Shop struct {
 	Name string    `json:"name" gorm:"not null;unique"`
 
 	Products []Product
-	Coupons  []Coupon
 }
 
 func (s *Shop) BeforeCreate(tx *gorm.DB) (err error) {
