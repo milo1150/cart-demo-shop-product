@@ -14,6 +14,7 @@ DATABASE_HOST_PORT=5433
 DATABASE_DOCKER_PORT=5432
 TIMEZONE=UTC
 LOCAL_TIMEZONE=Asis/Shanghai
+COMPOSE_PROJECT_NAME=demo-shop-product-service
 ```
 
 - For first time.
