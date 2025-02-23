@@ -2,9 +2,9 @@ package services
 
 import (
 	"errors"
-	"minicart/internal/dto"
-	"minicart/internal/repositories"
-	"minicart/internal/schemas"
+	"shop-product-service/internal/dto"
+	"shop-product-service/internal/repositories"
+	"shop-product-service/internal/schemas"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

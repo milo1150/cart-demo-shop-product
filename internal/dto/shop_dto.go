@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"minicart/internal/models"
+	"shop-product-service/internal/models"
 	"time"
 
 	"github.com/google/uuid"

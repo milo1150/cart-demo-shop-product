@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"minicart/internal/models"
-	"minicart/internal/schemas"
+	"shop-product-service/internal/models"
+	"shop-product-service/internal/schemas"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

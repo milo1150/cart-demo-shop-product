@@ -1,12 +1,12 @@
 package api
 
 import (
-	"minicart/internal/schemas"
-	"minicart/internal/services"
-	"minicart/internal/types"
-	"minicart/internal/utils"
-	"minicart/internal/validators"
 	"net/http"
+	"shop-product-service/internal/schemas"
+	"shop-product-service/internal/services"
+	"shop-product-service/internal/types"
+	"shop-product-service/internal/utils"
+	"shop-product-service/internal/validators"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"

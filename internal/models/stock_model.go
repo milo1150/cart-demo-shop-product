@@ -1,7 +1,7 @@
 package models
 
 import (
-	"minicart/internal/schemas"
+	"shop-product-service/internal/schemas"
 
 	"gorm.io/gorm"
 )

@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 	"log"
-	"minicart/internal/models"
 	"os"
+	"shop-product-service/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

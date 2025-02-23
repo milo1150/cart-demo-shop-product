@@ -1,7 +1,7 @@
 package validators
 
 import (
-	"minicart/internal/utils"
+	"shop-product-service/internal/utils"
 
 	"github.com/go-playground/validator/v10"
 )

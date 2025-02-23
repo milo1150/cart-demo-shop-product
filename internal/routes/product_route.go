@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"minicart/internal/api"
-	"minicart/internal/types"
+	"shop-product-service/internal/api"
+	"shop-product-service/internal/types"
 
 	"github.com/labstack/echo/v4"
 )

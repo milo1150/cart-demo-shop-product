@@ -1,11 +1,11 @@
 package main
 
 import (
-	"minicart/internal/database"
-	"minicart/internal/loader"
-	"minicart/internal/middlewares"
-	"minicart/internal/routes"
-	"minicart/internal/types"
+	"shop-product-service/internal/database"
+	"shop-product-service/internal/loader"
+	"shop-product-service/internal/middlewares"
+	"shop-product-service/internal/routes"
+	"shop-product-service/internal/types"
 
 	"github.com/labstack/echo/v4"
 )
