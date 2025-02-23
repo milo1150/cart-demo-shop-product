@@ -1,7 +1,7 @@
 services:
-  postgres:
+  postgres-shop-product: # service name must match the hostname in .env file.
     image: postgres:17.3
-    container_name: postgres-cart-demo
+    container_name: postgres-shop-product
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_USER: ${DATABASE_USER}
@@ -15,18 +15,17 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  web:
-    container_name: web-cart-demo
+  app:
+    container_name: go-app-shop-product
     build:
       context: ../../
       dockerfile: deployments/dev/Dockerfile
     ports:
       - 8083:1323
-    # Important to bind/mount your codebase dir to /app dir for live reload
     volumes:
-      - ../../:/app
+      - ../../:/app # Important to bind/mount codebase dir to /app dir for live reload
     depends_on:
-      postgres:
+      postgres-shop-product:
         condition: service_healthy
 
 volumes:

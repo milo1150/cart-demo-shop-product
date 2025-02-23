@@ -6,11 +6,11 @@
 
 ```bash
 APP_ENV=development
-DATABASE_HOST=postgres-cart-demo
+DATABASE_HOST=postgres-shop-product
 DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
-DATABASE_NAME=cartdb
-DATABASE_HOST_PORT=5432
+DATABASE_NAME=shop_product_db
+DATABASE_HOST_PORT=5433
 DATABASE_DOCKER_PORT=5432
 TIMEZONE=UTC
 LOCAL_TIMEZONE=Asis/Shanghai
@@ -31,7 +31,7 @@ cd scripts && ./dev-start.sh
 ## Database CLI
 
 ```bash
-pgcli postgres://postgres:postgres@127.0.0.1:5432/cartdb
+pgcli postgres://postgres:postgres@127.0.0.1:5433/shop_product_db
 ```
 
 ## Debug docker build (Dev)
