@@ -36,6 +36,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.shop-product-container.rule=PathPrefix(`/shop-product`)'
+      # tells Traefik which port inside the container the service is listening on.
       - 'traefik.http.services.shop-product-container.loadbalancer.server.port=1323'
     networks:
       - 'cart-demo'
