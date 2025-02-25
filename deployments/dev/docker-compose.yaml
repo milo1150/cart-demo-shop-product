@@ -18,16 +18,18 @@ services:
     networks:
       - 'cart-demo'
   app:
-    container_name: go-app-shop-product
+    # Disable custom container_name for horizontal scale
+    # container_name: go-app-shop-product
     build:
       context: ../../
       dockerfile: deployments/dev/Dockerfile
+    # No need ports, accept route from traefik only
     # ports:
     #   - 8083:1323
     expose:
       - 1323
-    # Important to bind/mount codebase dir to /app dir for live reload
     volumes:
+      # Important to bind/mount codebase dir to /app dir for live reload
       - ../../:/app
     depends_on:
       postgres-shop-product:
