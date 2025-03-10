@@ -2,6 +2,7 @@ package main
 
 import (
 	"shop-product-service/internal/database"
+	"shop-product-service/internal/grpc"
 	"shop-product-service/internal/loader"
 	"shop-product-service/internal/middlewares"
 	"shop-product-service/internal/routes"
@@ -32,6 +33,9 @@ func main() {
 	// Init Route
 	routes.RegisterAppRoutes(e, appState)
 
+	// gRPC Server
+	go grpc.StartShopProductGRPCServer()
+
 	// Start Server
-	e.Logger.Fatal(e.Start(":1323"))
+	go e.Logger.Fatal(e.Start(":1323"))
 }
