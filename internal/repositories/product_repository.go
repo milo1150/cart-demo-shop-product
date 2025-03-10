@@ -28,13 +28,13 @@ func (p *ProductRepository) FindProductByUUID(productUuid uuid.UUID) (*models.Pr
 	return product, nil
 }
 
-func (p *ProductRepository) CreateProduct(payload *schemas.CreateProductSchema, uuidV7 uuid.UUID) error {
+func (p *ProductRepository) CreateProduct(payload schemas.CreateProductSchema) error {
 	newProduct := &models.Product{
-		Uuid:        uuidV7,
 		Name:        payload.Name,
 		Description: payload.Description,
 		Price:       payload.Price,
 		ShopID:      payload.ShopId,
+		Stock:       payload.Stock,
 	}
 
 	if err := p.DB.Create(newProduct).Error; err != nil {
