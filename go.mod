@@ -1,6 +1,6 @@
 module shop-product-service
 
-go 1.24.0
+go 1.24.1
 
 require (
 	github.com/go-faker/faker/v4 v4.6.0
