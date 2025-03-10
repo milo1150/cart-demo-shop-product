@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - 'cart-demo'
+      - cart-demo
   app:
     # Disable custom container_name for horizontal scale
     # container_name: go-app-shop-product
@@ -41,11 +41,12 @@ services:
       # tells Traefik which port inside the container the service is listening on.
       - 'traefik.http.services.shop-product-container.loadbalancer.server.port=1323'
     networks:
-      - 'cart-demo'
+      - cart-demo
 
 volumes:
   postgres-data:
 
 networks:
   cart-demo:
-    external: true
+    name: cart-demo
+    driver: bridge
