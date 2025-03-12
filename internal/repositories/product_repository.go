@@ -4,7 +4,6 @@ import (
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -50,7 +49,6 @@ func (p *ProductRepository) FindProductsByIDs(productIds []uint64) (*[]models.Pr
 	if err := p.DB.Where("id IN ?", productIds).Find(products).Error; err != nil {
 		return nil, err
 	}
-	spew.Dump(products)
 	return products, nil
 }
 
