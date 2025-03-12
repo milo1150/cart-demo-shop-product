@@ -34,7 +34,7 @@ func main() {
 	routes.RegisterAppRoutes(e, appState)
 
 	// gRPC Server
-	go grpc.StartShopProductGRPCServer()
+	go grpc.StartShopProductGRPCServer(appState)
 
 	// Start Server
 	go e.Logger.Fatal(e.Start(":1323"))

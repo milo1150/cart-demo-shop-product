@@ -12,7 +12,15 @@ type ProductRepository struct {
 	DB *gorm.DB
 }
 
-func (p *ProductRepository) ProductExists(productUuid uuid.UUID) (bool, error) {
+func (p *ProductRepository) VerifyIsProductExistsByID(productId uint) (bool, error) {
+	var count int64
+	if err := p.DB.Model(&models.Product{}).Where("id = ?", productId).Count(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func (p *ProductRepository) VerifyIsProductExistsByUUID(productUuid uuid.UUID) (bool, error) {
 	var count int64
 	if err := p.DB.Model(&models.Product{}).Where("uuid = ?", productUuid).Count(&count).Error; err != nil {
 		return false, err
