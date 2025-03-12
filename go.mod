@@ -3,13 +3,14 @@ module shop-product-service
 go 1.24.1
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-faker/faker/v4 v4.6.0
 	github.com/go-playground/validator/v10 v10.25.0
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/milo1150/cart-demo-pkg v1.0.5
-	github.com/milo1150/cart-demo-proto v1.0.1
+	github.com/milo1150/cart-demo-proto v1.0.2
 	github.com/samber/lo v1.49.1
 	go.uber.org/zap v1.27.0
 	google.golang.org/grpc v1.71.0

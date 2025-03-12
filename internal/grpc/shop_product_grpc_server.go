@@ -32,8 +32,48 @@ func StartShopProductGRPCServer(appState *types.AppState) {
 	}
 }
 
-func (s *ShopProductServer) GetProduct(context.Context, *pb.GetProductRequest) (*pb.GetProductResponse, error) {
-	return &pb.GetProductResponse{Id: 1, ProductName: "test grpc", Price: 50, Stock: 100, ShopId: 99}, nil
+func (s *ShopProductServer) GetProduct(_ context.Context, payload *pb.GetProductRequest) (*pb.GetProductResponse, error) {
+	productRepository := repositories.ProductRepository{DB: s.AppState.DB}
+
+	product, err := productRepository.FindProductByID(uint(payload.ProductId))
+	if err != nil {
+		return nil, err
+	}
+
+	res := &pb.GetProductResponse{
+		Id:          uint64(product.ID),
+		Name:        product.Name,
+		Description: product.Description,
+		Price:       float64(product.Price),
+		Stock:       uint64(product.Stock),
+		ShopId:      uint64(product.ShopID),
+	}
+
+	return res, nil
+}
+
+func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
+	productRepository := repositories.ProductRepository{DB: s.AppState.DB}
+
+	products, err := productRepository.FindProductsByIDs(payload.ProductIds)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &pb.GetProductsResponse{Products: []*pb.GetProductResponse{}}
+	for _, product := range *products {
+		productRes := &pb.GetProductResponse{
+			Id:          uint64(product.ID),
+			Name:        product.Name,
+			Description: product.Description,
+			Price:       float64(product.Price),
+			Stock:       uint64(product.Stock),
+			ShopId:      uint64(product.ShopID),
+		}
+		res.Products = append(res.Products, productRes)
+	}
+
+	return res, nil
 }
 
 func (s *ShopProductServer) ProductExists(_ context.Context, payload *pb.CheckProductRequest) (*pb.CheckProductReponse, error) {

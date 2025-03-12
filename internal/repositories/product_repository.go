@@ -4,6 +4,7 @@ import (
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -34,6 +35,23 @@ func (p *ProductRepository) FindProductByUUID(productUuid uuid.UUID) (*models.Pr
 		return nil, err
 	}
 	return product, nil
+}
+
+func (p *ProductRepository) FindProductByID(productId uint) (*models.Product, error) {
+	product := &models.Product{}
+	if err := p.DB.First(product, "id = ?", productId).Error; err != nil {
+		return nil, err
+	}
+	return product, nil
+}
+
+func (p *ProductRepository) FindProductsByIDs(productIds []uint64) (*[]models.Product, error) {
+	products := &[]models.Product{}
+	if err := p.DB.Where("id IN ?", productIds).Find(products).Error; err != nil {
+		return nil, err
+	}
+	spew.Dump(products)
+	return products, nil
 }
 
 func (p *ProductRepository) CreateProduct(payload schemas.CreateProductSchema) error {
