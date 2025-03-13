@@ -17,6 +17,9 @@ func main() {
 
 	// Database handler
 	db := database.ConnectDatabase()
+
+	// Migrate
+	database.RunAutoMigrate(db)
 	database.RunMigrate(db)
 
 	// Global state
