@@ -1,9 +1,11 @@
 # Example
 # migrate create -ext sql -dir ../internal/database/migrations -seq create_users_table
 
+#!/bin/bash
+
 # Check if migration name is provided
 if [ -z "$1" ]; then
-	echo "Missing: $0 <migration_name>"
+	echo "Usage: $0 <migration_name>"
 	exit 1
 fi
 
