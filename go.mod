@@ -3,7 +3,6 @@ module shop-product-service
 go 1.24.1
 
 require (
-	github.com/davecgh/go-spew v1.1.1
 	github.com/go-faker/faker/v4 v4.6.0
 	github.com/go-playground/validator/v10 v10.25.0
 	github.com/golang-migrate/migrate/v4 v4.18.2

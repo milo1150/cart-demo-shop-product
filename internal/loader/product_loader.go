@@ -11,7 +11,6 @@ import (
 	"shop-product-service/internal/database"
 	"shop-product-service/internal/schemas"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/minio/minio-go/v7"
 	"go.uber.org/zap"
 )
@@ -62,8 +61,6 @@ func (p *ProductLoader) uploadFiles(file schemas.ProductJsonFile) {
 	if err != nil {
 		p.Log.Sugar().Fatalf("Failed to get basePath")
 	}
-
-	spew.Dump(products)
 
 	for _, product := range products {
 		imagePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, product.ImageName)
