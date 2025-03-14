@@ -17,6 +17,7 @@ type Product struct {
 	ShopID uint `gorm:"not null"`
 
 	// TODO: Image
+	// ImageUrl    string `json:"image_url"`
 }
 
 func (p *Product) BeforeCreate(tx *gorm.DB) error {

@@ -1,6 +1,14 @@
-[
-	{
-		"tmp_shop_id": 1,
-		"name": "salad_lighthouse"
-	}
-]
+{
+	"products": [
+		{
+			"tmp_shop_id": 1,
+			"name": "salad_lighthouse",
+			"image_name": "1_1.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad_ufo",
+			"image_name": "1_2.heic"
+		}
+	]
+}

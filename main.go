@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"shop-product-service/internal/database"
 	"shop-product-service/internal/grpc"
 	"shop-product-service/internal/loader"
@@ -15,16 +16,33 @@ func main() {
 	// Load ENV
 	loader.LoadEnv()
 
-	// Database handler
-	db := database.ConnectDatabase()
+	// Create a root context
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	// Migrate
-	database.RunAutoMigrate(db)
-	database.RunMigrate(db)
+	// Init zap logger
+	logger := middlewares.InitializeZapLogger()
+
+	// Connect postgres database
+	gormDB := database.ConnectPostgresDatabase()
+
+	// Migrate postgres
+	database.RunAutoMigrate(gormDB)
+	database.RunMigrate(gormDB)
+
+	// Connect Minio
+	minio := database.ConnectMinioDatabase()
+	database.CreateBucket(minio, ctx, "product-image")
+
+	// Init product table
+	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger}
+	productLoader.InitializeProductDatas()
 
 	// Global state
 	appState := &types.AppState{
-		DB: db,
+		DB:    gormDB,
+		Minio: minio,
+		Log:   logger,
 	}
 
 	// Creates an instance of Echo.

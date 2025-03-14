@@ -21,7 +21,7 @@ func getDatabaseUrl() string {
 	return dbUrl
 }
 
-func ConnectDatabase() *gorm.DB {
+func ConnectPostgresDatabase() *gorm.DB {
 	dbUrl := getDatabaseUrl()
 
 	db, err := gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
