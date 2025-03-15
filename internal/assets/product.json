@@ -2,13 +2,188 @@
 	"products": [
 		{
 			"tmp_shop_id": 1,
-			"name": "salad_lighthouse",
-			"image_name": "1_1.heic"
+			"name": "salad-lighthouse",
+			"image_name": "1-1-salad-lighthouse.heic"
 		},
 		{
 			"tmp_shop_id": 1,
-			"name": "salad_ufo",
-			"image_name": "1_2.heic"
+			"name": "salad-ufo",
+			"image_name": "1-2-salad-ufo.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-snowman",
+			"image_name": "1-3-salad-snowman.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-black-cat",
+			"image_name": "1-4-salad-black-cat.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-white-cat",
+			"image_name": "1-5-salad-white-cat.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-orange-cat",
+			"image_name": "1-6-salad-orange-cat.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-volcano",
+			"image_name": "1-7-salad-volcano.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-desert",
+			"image_name": "1-8-salad-desert.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-town",
+			"image_name": "1-9-salad-town.heic"
+		},
+		{
+			"tmp_shop_id": 1,
+			"name": "salad-forest",
+			"image_name": "1-10-salad-forest.heic"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "blue-bell",
+			"image_name": "2-1-blue-bell.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "daisy",
+			"image_name": "2-2-daisy.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "hydrangea",
+			"image_name": "2-3-hydrangea.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "lotus",
+			"image_name": "2-4-lotus.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "morning-glory",
+			"image_name": "2-5-morning-glory.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "sunflower",
+			"image_name": "2-6-sunflower.webp"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "lily",
+			"image_name": "2-7-lily.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "ragdoll",
+			"image_name": "3-1-ragdoll.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "maine-coon",
+			"image_name": "3-2-maine-coon.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "british-shorthair",
+			"image_name": "3-3-british-shorthair.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "siamese",
+			"image_name": "3-4-siamese.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "bengal",
+			"image_name": "3-5-bengal.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "scottish-fold",
+			"image_name": "3-6-scottish-fold.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "american-shorthair",
+			"image_name": "3-7-american-shorthair.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "abyssinian",
+			"image_name": "3-8-abyssinian.webp"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "norwegian-forest",
+			"image_name": "3-9-norwegian-forest.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "french-bulldog",
+			"image_name": "4-1-french-bulldog.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "labrador",
+			"image_name": "4-2-labrador.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "golden",
+			"image_name": "4-3-golden.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "german-shepherd",
+			"image_name": "4-4-german-shepherd.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "poodle",
+			"image_name": "4-5-poodle.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "dachshund",
+			"image_name": "4-6-dachshund.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "beagle",
+			"image_name": "4-7-beagle.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "corgi",
+			"image_name": "4-8-corgi.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "shiba",
+			"image_name": "4-9-shiba.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "shiba-white",
+			"image_name": "4-10-shiba-white.webp"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "shiba-black",
+			"image_name": "4-11-shiba-black.webp"
 		}
 	]
 }

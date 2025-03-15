@@ -56,6 +56,7 @@ func (p *ProductLoader) getFileContentType(path string) string {
 
 func (p *ProductLoader) uploadFiles(file schemas.ProductJsonFile) {
 	products := file.Products
+	minio := database.MinIO{Client: p.Client, Context: p.Ctx}
 
 	basePath, err := os.Getwd()
 	if err != nil {
@@ -63,14 +64,16 @@ func (p *ProductLoader) uploadFiles(file schemas.ProductJsonFile) {
 	}
 
 	for _, product := range products {
-		imagePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, product.ImageName)
-		contentType := p.getFileContentType(imagePath)
-		database.UploadFile(p.Client, p.Ctx, "product-image", product.Name, imagePath, contentType, p.Log)
+		isFileExists := minio.FileExists("product-image", product.Name)
+		if !isFileExists {
+			imagePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, product.ImageName)
+			contentType := p.getFileContentType(imagePath)
+			minio.UploadFile("product-image", product.Name, imagePath, contentType, p.Log)
+		}
 	}
-
 }
 
-func (p *ProductLoader) InitializeProductDatas() {
+func (p *ProductLoader) InitializeProductData() {
 	file := p.loadJsonFile()
 
 	productsJson := p.parseJsonFile(file)

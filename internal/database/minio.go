@@ -11,6 +11,11 @@ import (
 	"go.uber.org/zap"
 )
 
+type MinIO struct {
+	Client  *minio.Client
+	Context context.Context
+}
+
 func ConnectMinioDatabase() *minio.Client {
 	endpoint := os.Getenv("MINIO_ENDPOINT")
 	accessKeyID := os.Getenv("MINIO_ROOT_USER")
@@ -42,8 +47,17 @@ func CreateBucket(client *minio.Client, ctx context.Context, bucketName string) 
 	}
 }
 
-func UploadFile(client *minio.Client, ctx context.Context, bucketName, objectName, filePath, contentType string, log *zap.Logger) {
-	info, err := client.FPutObject(ctx, bucketName, objectName, filePath, minio.PutObjectOptions{ContentType: contentType})
+// True if file already exists
+func (m *MinIO) FileExists(bucketName, objectName string) bool {
+	_, err := m.Client.StatObject(m.Context, bucketName, objectName, minio.GetObjectOptions{})
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (m *MinIO) UploadFile(bucketName, objectName, filePath, contentType string, log *zap.Logger) {
+	info, err := m.Client.FPutObject(m.Context, bucketName, objectName, filePath, minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {
 		log.Error(fmt.Sprintf("Failed to upload file %s to %s", objectName, bucketName), zap.Error(err))
 	}

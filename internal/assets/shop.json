@@ -1,42 +1,20 @@
-[
-	{
-		"tmp_shop_id": 1,
-		"name": "Evergreen Market"
-	},
-	{
-		"tmp_shop_id": 2,
-		"name": "Golden Basket"
-	},
-	{
-		"tmp_shop_id": 3,
-		"name": "Urban Trends"
-	},
-	{
-		"tmp_shop_id": 4,
-		"name": "Cozy Corner"
-	},
-	{
-		"tmp_shop_id": 5,
-		"name": "Sunset Emporium"
-	},
-	{
-		"tmp_shop_id": 6,
-		"name": "Ocean Breeze Mart"
-	},
-	{
-		"tmp_shop_id": 7,
-		"name": "Peak Essentials"
-	},
-	{
-		"tmp_shop_id": 8,
-		"name": "Harmony Hub"
-	},
-	{
-		"tmp_shop_id": 9,
-		"name": "The Artisan Spot"
-	},
-	{
-		"tmp_shop_id": 10,
-		"name": "Velvet Valley Store"
-	}
-]
+{
+	"shops": [
+		{
+			"tmp_shop_id": 1,
+			"name": "Evergreen Market"
+		},
+		{
+			"tmp_shop_id": 2,
+			"name": "Golden Basket"
+		},
+		{
+			"tmp_shop_id": 3,
+			"name": "Harmony Hub"
+		},
+		{
+			"tmp_shop_id": 4,
+			"name": "Cozy Corner"
+		}
+	]
+}

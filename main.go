@@ -36,7 +36,7 @@ func main() {
 
 	// Init product table
 	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger}
-	productLoader.InitializeProductDatas()
+	productLoader.InitializeProductData()
 
 	// Global state
 	appState := &types.AppState{
