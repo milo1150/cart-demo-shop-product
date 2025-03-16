@@ -38,6 +38,10 @@ func main() {
 	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger}
 	productLoader.InitializeProductData()
 
+	// Init shop table
+	shopLoader := loader.ShopLoader{Ctx: ctx, Log: logger, DB: gormDB}
+	shopLoader.InitializeShopData()
+
 	// Global state
 	appState := &types.AppState{
 		DB:    gormDB,

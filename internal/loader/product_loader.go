@@ -21,7 +21,7 @@ type ProductLoader struct {
 	Log    *zap.Logger
 }
 
-func (p *ProductLoader) loadJsonFile() []byte {
+func (p *ProductLoader) LoadJsonFile() []byte {
 	basePath, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to get basePath")
@@ -37,7 +37,7 @@ func (p *ProductLoader) loadJsonFile() []byte {
 	return file
 }
 
-func (p *ProductLoader) parseJsonFile(file []byte) schemas.ProductJsonFile {
+func (p *ProductLoader) ParseJsonFile(file []byte) schemas.ProductJsonFile {
 	productsJson := schemas.ProductJsonFile{}
 
 	err := json.Unmarshal(file, &productsJson)
@@ -74,9 +74,9 @@ func (p *ProductLoader) uploadFiles(file schemas.ProductJsonFile) {
 }
 
 func (p *ProductLoader) InitializeProductData() {
-	file := p.loadJsonFile()
+	file := p.LoadJsonFile()
 
-	productsJson := p.parseJsonFile(file)
+	productsJson := p.ParseJsonFile(file)
 
 	p.uploadFiles(productsJson)
 }

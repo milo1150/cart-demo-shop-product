@@ -14,7 +14,7 @@ type Product struct {
 	Stock       uint      `json:"stock" gorm:"not null"`
 
 	// ProductCategory []ProductCategory `gorm:"many2many:product_categories"`
-	ShopID uint `gorm:"not null"`
+	ShopID uint `json:"shop_id" gorm:"default:null;constraint:OnDelete:SET NULL"`
 
 	// TODO: Image
 	// ImageUrl    string `json:"image_url"`
