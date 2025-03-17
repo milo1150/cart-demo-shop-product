@@ -52,7 +52,7 @@ func (p *ProductLoader) ParseJsonFile(file []byte) schemas.ProductJsonFile {
 	return productsJson
 }
 
-func (p *ProductLoader) getFileContentType(path string) string {
+func (p *ProductLoader) GetFileContentType(path string) string {
 	ext := filepath.Ext(path)
 	contentType := mime.TypeByExtension(ext)
 	return contentType
@@ -71,13 +71,49 @@ func (p *ProductLoader) UploadFilesToMinIO(file schemas.ProductJsonFile) {
 		isFileExists := minio.FileExists("product-image", product.Name)
 		if !isFileExists {
 			imagePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, product.ImageName)
-			contentType := p.getFileContentType(imagePath)
+			contentType := p.GetFileContentType(imagePath)
 			minio.UploadFile("product-image", product.Name, imagePath, contentType, p.Log)
 		}
 	}
 }
 
-func (p *ProductLoader) InsertProductsJsonToDatabase(productsJson []schemas.ProductJson) {
+func (p *ProductLoader) GetImageFilePath(filename string) string {
+	basePath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get basePath")
+	}
+
+	filePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, filename)
+
+	return filePath
+}
+
+func (p *ProductLoader) GetImageFile(filepath string) ([]byte, error) {
+	file, err := os.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
+}
+
+func (p *ProductLoader) insertProductToPostgres(product schemas.ProductJson) {
+	// Find product image and convert to binary
+	filePath := p.GetImageFilePath(product.ImageName)
+	file, err := p.GetImageFile(filePath)
+	if err != nil {
+		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
+	}
+
+	// Load product from json file into postgres db
+	newProduct := models.Product{Name: product.Name, Description: product.Name, Image: file}
+	if err := p.DB.Create(&newProduct).Error; err != nil {
+		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
+	} else {
+		p.Log.Info(fmt.Sprintf("Created product: %v", product.Name))
+	}
+}
+
+func (p *ProductLoader) prepareProductsJson(productsJson []schemas.ProductJson) {
 	// Make list of shop json names
 	productNames := lo.Map(productsJson, func(productJson schemas.ProductJson, index int) string {
 		return productJson.Name
@@ -105,11 +141,7 @@ func (p *ProductLoader) InsertProductsJsonToDatabase(productsJson []schemas.Prod
 	for _, product := range productsJson {
 		_, ok := existsProducts[product.Name]
 		if !ok {
-			if err := p.DB.Create(&models.Product{Name: product.Name}).Error; err != nil {
-				p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
-			} else {
-				p.Log.Info(fmt.Sprintf("Created product: %v", product.Name))
-			}
+			p.insertProductToPostgres(product)
 		}
 	}
 }
@@ -121,5 +153,5 @@ func (p *ProductLoader) InitializeProductData() {
 
 	// p.UploadFilesToMinIO(productsJson)
 
-	p.InsertProductsJsonToDatabase(productsJson.Products)
+	p.prepareProductsJson(productsJson.Products)
 }

@@ -1,10 +1,6 @@
 {
 	"shops": [
 		{
-			"tmp_shop_id": 1,
-			"name": "Evergreen Market"
-		},
-		{
 			"tmp_shop_id": 2,
 			"name": "Golden Basket"
 		},

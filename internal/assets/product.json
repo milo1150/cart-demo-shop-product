@@ -1,56 +1,6 @@
 {
 	"products": [
 		{
-			"tmp_shop_id": 1,
-			"name": "salad-lighthouse",
-			"image_name": "1-1-salad-lighthouse.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-ufo",
-			"image_name": "1-2-salad-ufo.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-snowman",
-			"image_name": "1-3-salad-snowman.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-black-cat",
-			"image_name": "1-4-salad-black-cat.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-white-cat",
-			"image_name": "1-5-salad-white-cat.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-orange-cat",
-			"image_name": "1-6-salad-orange-cat.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-volcano",
-			"image_name": "1-7-salad-volcano.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-desert",
-			"image_name": "1-8-salad-desert.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-town",
-			"image_name": "1-9-salad-town.heic"
-		},
-		{
-			"tmp_shop_id": 1,
-			"name": "salad-forest",
-			"image_name": "1-10-salad-forest.heic"
-		},
-		{
 			"tmp_shop_id": 2,
 			"name": "blue-bell",
 			"image_name": "2-1-blue-bell.webp"

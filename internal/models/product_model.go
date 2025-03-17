@@ -12,12 +12,12 @@ type Product struct {
 	Description string    `json:"description"`
 	Price       float32   `json:"price" gorm:"not null"`
 	Stock       uint      `json:"stock" gorm:"not null"`
+	Image       []byte    `json:"-" gorm:"type:bytea"`
 
 	// ProductCategory []ProductCategory `gorm:"many2many:product_categories"`
 	ShopID uint `json:"shop_id" gorm:"default:null;constraint:OnDelete:SET NULL"`
 
-	// TODO: Image
-	// ImageUrl    string `json:"image_url"`
+	//FIXME: use ImageUrl (MinIO) insteadof Image
 }
 
 func (p *Product) BeforeCreate(tx *gorm.DB) error {
