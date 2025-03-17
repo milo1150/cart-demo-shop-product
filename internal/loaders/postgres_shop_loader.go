@@ -1,11 +1,9 @@
-package loader
+package loaders
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
@@ -14,39 +12,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type ShopLoader struct {
+type ShopPgLoader struct {
 	Ctx context.Context
 	Log *zap.Logger
 	DB  *gorm.DB
 }
 
-func (s *ShopLoader) LoadJsonFile() []byte {
-	basePath, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("Failed to get basePath")
-	}
-
-	filePath := fmt.Sprintf("%v/internal/assets/shop.json", basePath)
-
-	file, err := os.ReadFile(filePath)
-	if err != nil {
-		log.Fatalf("Failed to read shop.json: %v", err)
-	}
-
-	return file
-}
-
-func (s *ShopLoader) ParseJsonFile(file []byte) schemas.ShopJsonFile {
-	shopsJson := schemas.ShopJsonFile{}
-
-	if err := json.Unmarshal(file, &shopsJson); err != nil {
-		log.Fatalf("Failed to parse shop.json: %v", err)
-	}
-
-	return shopsJson
-}
-
-func (s *ShopLoader) InsertShopsJsonToDatabase(shopsJson []schemas.ShopJson) {
+func (s *ShopPgLoader) InsertShopsJsonToDatabase(shopsJson []schemas.ShopJson) {
 	// Make list of shop json names
 	shopNames := lo.Map(shopsJson, func(shopJson schemas.ShopJson, index int) string {
 		return shopJson.Name
@@ -83,10 +55,10 @@ func (s *ShopLoader) InsertShopsJsonToDatabase(shopsJson []schemas.ShopJson) {
 	}
 }
 
-func (s *ShopLoader) InitializeShopData() {
-	file := s.LoadJsonFile()
+func (s *ShopPgLoader) InitializeShopData() {
+	file := LoadShopJsonFile()
 
-	shopsJson := s.ParseJsonFile(file)
+	shopsJson := ParseShopJsonFile(file)
 
 	s.InsertShopsJsonToDatabase(shopsJson.Shops)
 }

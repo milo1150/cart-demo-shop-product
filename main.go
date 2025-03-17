@@ -4,7 +4,7 @@ import (
 	"context"
 	"shop-product-service/internal/database"
 	"shop-product-service/internal/grpc"
-	"shop-product-service/internal/loader"
+	"shop-product-service/internal/loaders"
 	"shop-product-service/internal/middlewares"
 	"shop-product-service/internal/routes"
 	"shop-product-service/internal/types"
@@ -14,7 +14,7 @@ import (
 
 func main() {
 	// Load ENV
-	loader.LoadEnv()
+	loaders.LoadEnv()
 
 	// Create a root context
 	ctx, cancel := context.WithCancel(context.Background())
@@ -35,12 +35,12 @@ func main() {
 	// database.CreateBucket(minio, ctx, "product-image")
 
 	// Init Shop table
-	shopLoader := loader.ShopLoader{Ctx: ctx, Log: logger, DB: gormDB}
-	shopLoader.InitializeShopData()
+	shopPgLoader := loaders.ShopPgLoader{Ctx: ctx, Log: logger, DB: gormDB}
+	shopPgLoader.InitializeShopData()
 
 	// Init Product table
-	productLoader := loader.ProductLoader{Ctx: ctx, Log: logger, DB: gormDB}
-	productLoader.InitializeProductData()
+	productPgLoader := loaders.ProductPgLoader{Ctx: ctx, Log: logger, DB: gormDB}
+	productPgLoader.InitializeProductData()
 
 	// Global state
 	appState := &types.AppState{
