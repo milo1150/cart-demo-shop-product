@@ -7,6 +7,7 @@ import (
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
+	"github.com/go-faker/faker/v4"
 	"github.com/samber/lo"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -66,8 +67,19 @@ func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson, s
 	// Find shop id (ShopID relation)
 	shopId := shops[product.TmpShopId].ShopId
 
+	// Random number for generate price and stock
+	randInt, err := faker.RandomInt(20)
+
 	// Load product from json file into postgres db
-	newProduct := models.Product{Name: product.Name, Description: product.Name, Image: file, ShopID: shopId}
+	newProduct := models.Product{
+		Name:        product.Name,
+		Description: product.Name,
+		Image:       file,
+		ShopID:      shopId,
+		Price:       float32(randInt[0]),
+		Stock:       uint(randInt[1]),
+	}
+
 	if err := p.DB.Create(&newProduct).Error; err != nil {
 		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
 	} else {
