@@ -30,23 +30,22 @@ func main() {
 	database.RunAutoMigrate(gormDB)
 	database.RunMigrate(gormDB)
 
-	// Connect Minio
-	minio := database.ConnectMinioDatabase()
-	database.CreateBucket(minio, ctx, "product-image")
+	// // Connect Minio
+	// minio := database.ConnectMinioDatabase()
+	// database.CreateBucket(minio, ctx, "product-image")
 
-	// Init shop table
+	// Init Shop table
 	shopLoader := loader.ShopLoader{Ctx: ctx, Log: logger, DB: gormDB}
 	shopLoader.InitializeShopData()
 
-	// Init product table
-	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger, DB: gormDB}
+	// Init Product table
+	productLoader := loader.ProductLoader{Ctx: ctx, Log: logger, DB: gormDB}
 	productLoader.InitializeProductData()
 
 	// Global state
 	appState := &types.AppState{
-		DB:    gormDB,
-		Minio: minio,
-		Log:   logger,
+		DB:  gormDB,
+		Log: logger,
 	}
 
 	// Creates an instance of Echo.

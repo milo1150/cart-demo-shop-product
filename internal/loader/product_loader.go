@@ -58,7 +58,7 @@ func (p *ProductLoader) getFileContentType(path string) string {
 	return contentType
 }
 
-func (p *ProductLoader) uploadFiles(file schemas.ProductJsonFile) {
+func (p *ProductLoader) UploadFilesToMinIO(file schemas.ProductJsonFile) {
 	products := file.Products
 	minio := database.MinIO{Client: p.Client, Context: p.Ctx}
 
@@ -119,7 +119,7 @@ func (p *ProductLoader) InitializeProductData() {
 
 	productsJson := p.ParseJsonFile(file)
 
-	p.uploadFiles(productsJson)
+	// p.UploadFilesToMinIO(productsJson)
 
 	p.InsertProductsJsonToDatabase(productsJson.Products)
 }

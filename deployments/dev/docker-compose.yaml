@@ -18,40 +18,41 @@ services:
     networks:
       - cart-demo
 
-  minio-shop-product:
-    image: minio/minio:latest
-    container_name: minio-shop-product
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-      MINIO_BROWSER_REDIRECT_URL: 'http://localhost/minio-shop-product'
-      # MINIO_SERVER_URL: 'http://localhost'
-    # ports:
-    #   - '9000:9000' # MinIO API port
-    #   - '9001:9001' # MinIO Web UI
-    expose:
-      - '9000' # MinIO API port
-      - '9001' # MinIO Web UI
-    volumes:
-      - minio-data:/data
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'mc',
-          'alias',
-          'set',
-          'local',
-          'http://127.0.0.1:9000',
-          '${MINIO_ROOT_USER}',
-          '${MINIO_ROOT_PASSWORD}',
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - cart-demo
+  # FIXME: Use this for store product image
+  # minio-shop-product:
+  #   image: minio/minio:latest
+  #   container_name: minio-shop-product
+  #   command: server /data --console-address ":9001"
+  #   environment:
+  #     MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+  #     MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+  #     MINIO_BROWSER_REDIRECT_URL: 'http://localhost/minio-shop-product'
+  #     # MINIO_SERVER_URL: 'http://localhost'
+  #   # ports:
+  #   #   - '9000:9000' # MinIO API port
+  #   #   - '9001:9001' # MinIO Web UI
+  #   expose:
+  #     - '9000' # MinIO API port
+  #     - '9001' # MinIO Web UI
+  #   volumes:
+  #     - minio-data:/data
+  #   healthcheck:
+  #     test:
+  #       [
+  #         'CMD',
+  #         'mc',
+  #         'alias',
+  #         'set',
+  #         'local',
+  #         'http://127.0.0.1:9000',
+  #         '${MINIO_ROOT_USER}',
+  #         '${MINIO_ROOT_PASSWORD}',
+  #       ]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - cart-demo
 
   app:
     # Disable custom container_name for horizontal scale
