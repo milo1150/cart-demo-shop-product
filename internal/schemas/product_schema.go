@@ -14,3 +14,8 @@ type CreateProductSchema struct {
 type GenerateProductSchema struct {
 	ShopId uint `json:"shop_id" validate:"required"`
 }
+
+type GetProducts struct {
+	Ordered  bool   `json:"ordered" validate:"boolean"`
+	PageSize uint64 `json:"page_size" validate:"numeric,min=1,max=100"`
+}

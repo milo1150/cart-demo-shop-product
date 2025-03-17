@@ -81,3 +81,23 @@ func (p *ProductRepository) UpdateProductStock(productId uint, amount uint) (*mo
 
 	return product, nil
 }
+
+func (p *ProductRepository) GetProducts(payload schemas.GetProducts) (*[]models.Product, error) {
+	products := []models.Product{}
+
+	// Ordered
+	var ordered string
+	if payload.Ordered {
+		ordered = "updated_at desc"
+	} else {
+		ordered = "RANDOM()"
+	}
+
+	query := p.DB.Order(ordered).Find(&products)
+
+	if query.Error != nil {
+		return nil, query.Error
+	}
+
+	return &products, nil
+}

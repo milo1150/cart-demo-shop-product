@@ -21,7 +21,7 @@ func TransformShopDTO(shopModel *models.Shop) *ShopDTO {
 		UpdatedAt: shopModel.UpdatedAt,
 		Uuid:      shopModel.Uuid,
 		Name:      shopModel.Name,
-		Products:  TransformProductListDTO(shopModel.Products),
+		Products:  TransformProductListDTO(&shopModel.Products),
 	}
 	return shop
 }

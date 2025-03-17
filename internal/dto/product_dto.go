@@ -15,6 +15,7 @@ type ProductDTO struct {
 	Description string    `json:"description"`
 	Price       float32   `json:"price"`
 	Stock       uint      `json:"stock"`
+	Image       string    `json:"image"`
 }
 
 func TransformProductDTO(productModel *models.Product) ProductDTO {
@@ -26,14 +27,15 @@ func TransformProductDTO(productModel *models.Product) ProductDTO {
 		Description: productModel.Description,
 		Price:       productModel.Price,
 		Stock:       productModel.Stock,
+		// TODO: Image
 	}
 	return product
 }
 
-func TransformProductListDTO(productModels []models.Product) []ProductDTO {
-	products := make([]ProductDTO, len(productModels))
+func TransformProductListDTO(productModels *[]models.Product) []ProductDTO {
+	products := make([]ProductDTO, len(*productModels))
 
-	for index, product := range productModels {
+	for index, product := range *productModels {
 		products[index] = TransformProductDTO(&product)
 	}
 

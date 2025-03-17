@@ -17,4 +17,8 @@ func ProductRoutes(e *echo.Echo, appState *types.AppState) {
 	productGroup.POST("/generate-random-product", func(c echo.Context) error {
 		return api.GenerateRandomProductHandler(c, appState)
 	})
+
+	productGroup.GET("/products", func(c echo.Context) error {
+		return api.GetProducts(c, appState)
+	})
 }

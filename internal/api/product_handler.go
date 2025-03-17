@@ -6,6 +6,7 @@ import (
 	"shop-product-service/internal/schemas"
 	"shop-product-service/internal/services"
 	"shop-product-service/internal/types"
+	"strconv"
 
 	"github.com/go-faker/faker/v4"
 	"github.com/go-playground/validator/v10"
@@ -58,4 +59,27 @@ func GenerateRandomProductHandler(c echo.Context, appState *types.AppState) erro
 	}
 
 	return c.JSON(http.StatusCreated, http.StatusCreated)
+}
+
+func GetProducts(c echo.Context, appState *types.AppState) error {
+	ordered, _ := strconv.ParseBool(c.QueryParam("ordered"))
+	pageSize, _ := strconv.Atoi(c.QueryParam("page_size"))
+
+	payload := schemas.GetProducts{
+		Ordered:  ordered,
+		PageSize: uint64(pageSize),
+	}
+
+	validate := validator.New()
+	if err := cartpkg.ValidateJsonPayload(validate, payload); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	productRepository := repositories.ProductRepository{DB: appState.DB}
+	products, err := productRepository.GetProducts(payload)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, cartpkg.GetSimpleErrorMessage(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, products)
 }

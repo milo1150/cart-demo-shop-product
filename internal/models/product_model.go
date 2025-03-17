@@ -1,23 +1,31 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type Product struct {
-	gorm.Model
-	Uuid        uuid.UUID `json:"uuid" gorm:"not null;type:uuid;uniqueIndex"`
-	Name        string    `json:"name" gorm:"not null"`
-	Description string    `json:"description"`
-	Price       float32   `json:"price" gorm:"not null"`
-	Stock       uint      `json:"stock" gorm:"not null"`
-	Image       []byte    `json:"-" gorm:"type:bytea"`
+	ID          uint           `json:"id" gorm:"primarykey"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+	Uuid        uuid.UUID      `json:"uuid" gorm:"not null;type:uuid;uniqueIndex"`
+	Name        string         `json:"name" gorm:"not null"`
+	Description string         `json:"description"`
+	Price       float32        `json:"price" gorm:"not null"`
+	Stock       uint           `json:"stock" gorm:"not null"`
 
-	// ProductCategory []ProductCategory `gorm:"many2many:product_categories"`
+	//TODO: use ImageUrl (MinIO) insteadof Image
+	Image []byte `json:"-" gorm:"type:bytea"`
+
+	// Relation
 	ShopID uint `json:"shop_id" gorm:"default:null;constraint:OnDelete:SET NULL"`
 
-	//FIXME: use ImageUrl (MinIO) insteadof Image
+	//TODO: ProductCategory []ProductCategory `gorm:"many2many:product_categories"`
+
 }
 
 func (p *Product) BeforeCreate(tx *gorm.DB) error {
