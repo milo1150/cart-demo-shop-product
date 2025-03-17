@@ -39,7 +39,7 @@ func main() {
 	shopPgLoader.InitializeShopData()
 
 	// Init Product table
-	productPgLoader := loaders.ProductPgLoader{Ctx: ctx, Log: logger, DB: gormDB}
+	productPgLoader := loaders.ProductPgLoader{Log: logger, DB: gormDB}
 	productPgLoader.InitializeProductData()
 
 	// Global state

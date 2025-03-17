@@ -1,7 +1,6 @@
 package loaders
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"os"
@@ -15,11 +14,29 @@ import (
 
 type ProductPgLoader struct {
 	DB  *gorm.DB
-	Ctx context.Context
 	Log *zap.Logger
 }
 
-func (p *ProductPgLoader) GetImageFilePath(filename string) string {
+func (p *ProductPgLoader) getCreatedShopsJson(shopJson schemas.ShopJsonFile) schemas.CreatedShopsJson {
+	shops := schemas.CreatedShopsJson{}
+
+	for _, shopJson := range shopJson.Shops {
+		shopModel := models.Shop{}
+		if err := p.DB.Where("name = ?", shopJson.Name).Find(&shopModel).Error; err != nil {
+			log.Fatalf("ShopJson %v not found: %v", shopJson.Name, err)
+		}
+
+		shops[shopJson.TmpShopId] = schemas.CreatedShopJson{
+			TmpShopId: shopJson.TmpShopId,
+			Name:      shopModel.Name,
+			ShopId:    shopModel.ID,
+		}
+	}
+
+	return shops
+}
+
+func (p *ProductPgLoader) getImageFilePath(filename string) string {
 	basePath, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to get basePath")
@@ -30,7 +47,7 @@ func (p *ProductPgLoader) GetImageFilePath(filename string) string {
 	return filePath
 }
 
-func (p *ProductPgLoader) GetImageFile(filepath string) ([]byte, error) {
+func (p *ProductPgLoader) getImageFile(filepath string) ([]byte, error) {
 	file, err := os.ReadFile(filepath)
 	if err != nil {
 		return nil, err
@@ -38,16 +55,19 @@ func (p *ProductPgLoader) GetImageFile(filepath string) ([]byte, error) {
 	return file, nil
 }
 
-func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson) {
+func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson, shops schemas.CreatedShopsJson) {
 	// Find product image and convert to binary
-	filePath := p.GetImageFilePath(product.ImageName)
-	file, err := p.GetImageFile(filePath)
+	filePath := p.getImageFilePath(product.ImageName)
+	file, err := p.getImageFile(filePath)
 	if err != nil {
 		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
 	}
 
+	// Find shop id (ShopID relation)
+	shopId := shops[product.TmpShopId].ShopId
+
 	// Load product from json file into postgres db
-	newProduct := models.Product{Name: product.Name, Description: product.Name, Image: file}
+	newProduct := models.Product{Name: product.Name, Description: product.Name, Image: file, ShopID: shopId}
 	if err := p.DB.Create(&newProduct).Error; err != nil {
 		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
 	} else {
@@ -55,7 +75,7 @@ func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson) {
 	}
 }
 
-func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson) {
+func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson, shops schemas.CreatedShopsJson) {
 	// Make list of shop json names
 	productNames := lo.Map(productsJson, func(productJson schemas.ProductJson, index int) string {
 		return productJson.Name
@@ -83,15 +103,23 @@ func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson
 	for _, product := range productsJson {
 		_, ok := existsProducts[product.Name]
 		if !ok {
-			p.insertProductToPostgres(product)
+			p.insertProductToPostgres(product, shops)
 		}
 	}
 }
 
 func (p *ProductPgLoader) InitializeProductData() {
-	file := LoadProductJsonFile()
+	// Load & Parse shop.json
+	shopJsonFile := LoadShopJsonFile()
+	shopJson := ParseShopJsonFile(shopJsonFile)
 
-	productsJson := ParseProductJsonFile(file)
+	// Query created shop.json
+	shops := p.getCreatedShopsJson(shopJson)
 
-	p.prepareProductsJson(productsJson.Products)
+	// Load & Parse product.json
+	productJsonFile := LoadProductJsonFile()
+	productsJson := ParseProductJsonFile(productJsonFile)
+
+	// Prepare and create product in product.json into postgres db
+	p.prepareProductsJson(productsJson.Products, shops)
 }
