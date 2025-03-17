@@ -34,13 +34,13 @@ func main() {
 	minio := database.ConnectMinioDatabase()
 	database.CreateBucket(minio, ctx, "product-image")
 
-	// Init product table
-	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger}
-	productLoader.InitializeProductData()
-
 	// Init shop table
 	shopLoader := loader.ShopLoader{Ctx: ctx, Log: logger, DB: gormDB}
 	shopLoader.InitializeShopData()
+
+	// Init product table
+	productLoader := loader.ProductLoader{Client: minio, Ctx: ctx, Log: logger, DB: gormDB}
+	productLoader.InitializeProductData()
 
 	// Global state
 	appState := &types.AppState{

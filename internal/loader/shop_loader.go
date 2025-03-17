@@ -81,7 +81,6 @@ func (s *ShopLoader) InsertShopsJsonToDatabase(shopsJson []schemas.ShopJson) {
 			}
 		}
 	}
-
 }
 
 func (s *ShopLoader) InitializeShopData() {

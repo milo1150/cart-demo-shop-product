@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
@@ -47,6 +48,14 @@ func CreateBucket(client *minio.Client, ctx context.Context, bucketName string) 
 	}
 }
 
+func (m *MinIO) GetPresignedUrl(bucketName, objectName string, log *zap.Logger) string {
+	url, err := m.Client.PresignedGetObject(m.Context, bucketName, objectName, 10*time.Minute, nil)
+	if err != nil {
+		log.Error("GetPresignedUrl", zap.Error(err))
+	}
+	return url.String()
+}
+
 // True if file already exists
 func (m *MinIO) FileExists(bucketName, objectName string) bool {
 	_, err := m.Client.StatObject(m.Context, bucketName, objectName, minio.GetObjectOptions{})
@@ -61,5 +70,9 @@ func (m *MinIO) UploadFile(bucketName, objectName, filePath, contentType string,
 	if err != nil {
 		log.Error(fmt.Sprintf("Failed to upload file %s to %s", objectName, bucketName), zap.Error(err))
 	}
+
+	// Log
+	fileURL := fmt.Sprintf("%s/%s/%s", m.Client.EndpointURL(), bucketName, objectName)
+	log.Info("File accessible at:", zap.String("URL", fileURL))
 	log.Info(fmt.Sprintf("Successfully uploaded %s of size %d", objectName, info.Size))
 }
