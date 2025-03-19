@@ -18,9 +18,7 @@ type Product struct {
 	Price       float32        `json:"price" gorm:"not null"`
 	Stock       uint           `json:"stock" gorm:"not null"`
 	ImageUrl    string         `json:"image_url"`
-
-	//TODO: use ImageUrl (MinIO) insteadof Image
-	Image []byte `json:"-" gorm:"type:bytea"`
+	Image       []byte         `json:"-" gorm:"type:bytea"`
 
 	// Relation
 	ShopID uint `json:"shop_id" gorm:"default:null;constraint:OnDelete:SET NULL"`

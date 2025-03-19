@@ -27,7 +27,7 @@ func TransformProductDTO(productModel *models.Product) ProductDTO {
 		Description: productModel.Description,
 		Price:       productModel.Price,
 		Stock:       productModel.Stock,
-		// TODO: Image
+		Image:       productModel.ImageUrl,
 	}
 	return product
 }
