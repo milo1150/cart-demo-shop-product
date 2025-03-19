@@ -34,13 +34,14 @@ func main() {
 	// Connect Minio
 	minio := database.ConnectMinioDatabase()
 
-	// Create Private bucket
-	minioApiURL := os.Getenv("MINIO_API_URL") // FIXME: move and validate struct
+	// Init Minio connection
+	minioApiURL := os.Getenv("MINIO_API_URL")
+	publicBucketName := os.Getenv("MINIO_PUBLIC_BUCKET_NAME")
 	minioClient := database.MinIO{Client: minio, Context: ctx, ApiURL: minioApiURL, Log: logger}
 
 	// Init Minio product images
 	productMinioLoader := loaders.ProductMinIOLoader{Log: logger, Client: minio, Ctx: ctx}
-	productMinioLoader.InitializeProductData("public-bucket", &minioClient)
+	productMinioLoader.InitializeProductData(publicBucketName, &minioClient)
 
 	// Init Shop table
 	shopPgLoader := loaders.ShopPgLoader{Ctx: ctx, Log: logger, DB: gormDB}
@@ -48,7 +49,7 @@ func main() {
 
 	// Init Product table
 	productPgLoader := loaders.ProductPgLoader{Log: logger, DB: gormDB}
-	productPgLoader.InitializeProductData(&minioClient, "public-bucket")
+	productPgLoader.InitializeProductData(&minioClient, publicBucketName)
 
 	// Global state
 	appState := &types.AppState{
