@@ -4,13 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"mime"
 	"os"
+	"path/filepath"
 	"shop-product-service/internal/schemas"
 
 	"github.com/joho/godotenv"
 )
 
-func LoadEnv() {
+func LoadENV() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -68,4 +70,28 @@ func ParseShopJsonFile(file []byte) schemas.ShopJsonFile {
 	}
 
 	return shopsJson
+}
+
+func GetImageFilePath(filename string) string {
+	basePath, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get basePath")
+	}
+
+	filePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, filename)
+
+	return filePath
+}
+
+// Ex: .webp
+func GetFileExtension(path string) string {
+	ext := filepath.Ext(path)
+	return ext
+}
+
+// Ex: image/webp
+func GetFileMIMEType(path string) string {
+	ext := GetFileExtension(path)
+	mimeType := mime.TypeByExtension(ext)
+	return mimeType
 }

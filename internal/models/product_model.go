@@ -17,6 +17,7 @@ type Product struct {
 	Description string         `json:"description"`
 	Price       float32        `json:"price" gorm:"not null"`
 	Stock       uint           `json:"stock" gorm:"not null"`
+	ImageUrl    string         `json:"image_url"`
 
 	//TODO: use ImageUrl (MinIO) insteadof Image
 	Image []byte `json:"-" gorm:"type:bytea"`

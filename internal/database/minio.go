@@ -15,6 +15,8 @@ import (
 type MinIO struct {
 	Client  *minio.Client
 	Context context.Context
+	ApiURL  string
+	Log     *zap.Logger
 }
 
 func ConnectMinioDatabase() *minio.Client {
@@ -33,11 +35,11 @@ func ConnectMinioDatabase() *minio.Client {
 	return minioClient
 }
 
-func CreateBucket(client *minio.Client, ctx context.Context, bucketName string) {
-	err := client.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
+func (m *MinIO) CreateBucket(bucketName string) {
+	err := m.Client.MakeBucket(m.Context, bucketName, minio.MakeBucketOptions{})
 	if err != nil {
 		// Check to see if we already own this bucket (which happens if you run this twice)
-		exists, errBucketExists := client.BucketExists(ctx, bucketName)
+		exists, errBucketExists := m.Client.BucketExists(m.Context, bucketName)
 		if errBucketExists == nil && exists {
 			log.Printf("MinIO: already create %s\n", bucketName)
 		} else {
@@ -46,14 +48,6 @@ func CreateBucket(client *minio.Client, ctx context.Context, bucketName string) 
 	} else {
 		log.Printf("MinIO: successfully created %s\n", bucketName)
 	}
-}
-
-func (m *MinIO) GetPresignedUrl(bucketName, objectName string, log *zap.Logger) string {
-	url, err := m.Client.PresignedGetObject(m.Context, bucketName, objectName, 10*time.Minute, nil)
-	if err != nil {
-		log.Error("GetPresignedUrl", zap.Error(err))
-	}
-	return url.String()
 }
 
 // True if file already exists
@@ -75,4 +69,17 @@ func (m *MinIO) UploadFile(bucketName, objectName, filePath, contentType string,
 	fileURL := fmt.Sprintf("%s/%s/%s", m.Client.EndpointURL(), bucketName, objectName)
 	log.Info("File accessible at:", zap.String("URL", fileURL))
 	log.Info(fmt.Sprintf("Successfully uploaded %s of size %d", objectName, info.Size))
+}
+
+func (m *MinIO) GetPublicURL(bucketName, objectName string) string {
+	return fmt.Sprintf("%s/%s/%s", m.ApiURL, bucketName, objectName)
+}
+
+func (m *MinIO) GetPublicURLWithExpireDate(bucketName, objectName string, expires time.Duration) string {
+	presignedUrl, err := m.Client.PresignedGetObject(m.Context, bucketName, objectName, expires, nil)
+	if err != nil {
+		m.Log.Error("Error GeneratePublicURLWithExpireDate", zap.Error(err))
+	}
+
+	return fmt.Sprintf("%s%s?%s", m.ApiURL, presignedUrl.Path, presignedUrl.RawQuery)
 }

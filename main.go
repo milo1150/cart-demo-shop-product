@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 	"shop-product-service/internal/database"
 	"shop-product-service/internal/grpc"
 	"shop-product-service/internal/loaders"
@@ -14,7 +15,7 @@ import (
 
 func main() {
 	// Load ENV
-	loaders.LoadEnv()
+	loaders.LoadENV()
 
 	// Create a root context
 	ctx, cancel := context.WithCancel(context.Background())
@@ -30,9 +31,16 @@ func main() {
 	database.RunAutoMigrate(gormDB)
 	database.RunMigrate(gormDB)
 
-	// // Connect Minio
-	// minio := database.ConnectMinioDatabase()
-	// database.CreateBucket(minio, ctx, "product-image")
+	// Connect Minio
+	minio := database.ConnectMinioDatabase()
+
+	// Create Private bucket
+	minioApiURL := os.Getenv("MINIO_API_URL") // FIXME: move and validate struct
+	minioClient := database.MinIO{Client: minio, Context: ctx, ApiURL: minioApiURL, Log: logger}
+
+	// Init Minio product images
+	productMinioLoader := loaders.ProductMinIOLoader{Log: logger, Client: minio, Ctx: ctx}
+	productMinioLoader.InitializeProductData("public-bucket", &minioClient)
 
 	// Init Shop table
 	shopPgLoader := loaders.ShopPgLoader{Ctx: ctx, Log: logger, DB: gormDB}
@@ -40,12 +48,13 @@ func main() {
 
 	// Init Product table
 	productPgLoader := loaders.ProductPgLoader{Log: logger, DB: gormDB}
-	productPgLoader.InitializeProductData()
+	productPgLoader.InitializeProductData(&minioClient, "public-bucket")
 
 	// Global state
 	appState := &types.AppState{
-		DB:  gormDB,
-		Log: logger,
+		DB:    gormDB,
+		Log:   logger,
+		Minio: minio,
 	}
 
 	// Creates an instance of Echo.

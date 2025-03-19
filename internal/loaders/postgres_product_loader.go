@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"shop-product-service/internal/database"
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
@@ -37,18 +38,7 @@ func (p *ProductPgLoader) getCreatedShopsJson(shopJson schemas.ShopJsonFile) sch
 	return shops
 }
 
-func (p *ProductPgLoader) getImageFilePath(filename string) string {
-	basePath, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("Failed to get basePath")
-	}
-
-	filePath := fmt.Sprintf("%v/internal/assets/images/%v", basePath, filename)
-
-	return filePath
-}
-
-func (p *ProductPgLoader) getImageFile(filepath string) ([]byte, error) {
+func (p *ProductPgLoader) GetImageFile(filepath string) ([]byte, error) {
 	file, err := os.ReadFile(filepath)
 	if err != nil {
 		return nil, err
@@ -56,27 +46,23 @@ func (p *ProductPgLoader) getImageFile(filepath string) ([]byte, error) {
 	return file, nil
 }
 
-func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson, shops schemas.CreatedShopsJson) {
-	// Find product image and convert to binary
-	filePath := p.getImageFilePath(product.ImageName)
-	file, err := p.getImageFile(filePath)
-	if err != nil {
-		p.Log.Error(fmt.Sprintf("Failed to create product: %v", product.Name))
-	}
-
+func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson, shops schemas.CreatedShopsJson, minioClient *database.MinIO, bucketName string) {
 	// Find shop id (ShopID relation)
 	shopId := shops[product.TmpShopId].ShopId
 
 	// Random number for generate price and stock
-	randInt, err := faker.RandomInt(20)
+	randInt, _ := faker.RandomInt(20)
+
+	// Generate image url
+	imageUrl := minioClient.GetPublicURL(bucketName, product.Name)
 
 	// Load product from json file into postgres db
 	newProduct := models.Product{
 		Name:        product.Name,
 		Description: product.Name,
-		Image:       file,
 		ShopID:      shopId,
 		Price:       float32(randInt[0]),
+		ImageUrl:    imageUrl,
 		Stock:       uint(randInt[1]),
 	}
 
@@ -87,7 +73,7 @@ func (p *ProductPgLoader) insertProductToPostgres(product schemas.ProductJson, s
 	}
 }
 
-func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson, shops schemas.CreatedShopsJson) {
+func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson, shops schemas.CreatedShopsJson, minioClient *database.MinIO, bucketName string) {
 	// Make list of shop json names
 	productNames := lo.Map(productsJson, func(productJson schemas.ProductJson, index int) string {
 		return productJson.Name
@@ -115,12 +101,12 @@ func (p *ProductPgLoader) prepareProductsJson(productsJson []schemas.ProductJson
 	for _, product := range productsJson {
 		_, ok := existsProducts[product.Name]
 		if !ok {
-			p.insertProductToPostgres(product, shops)
+			p.insertProductToPostgres(product, shops, minioClient, bucketName)
 		}
 	}
 }
 
-func (p *ProductPgLoader) InitializeProductData() {
+func (p *ProductPgLoader) InitializeProductData(minioClient *database.MinIO, bucketName string) {
 	// Load & Parse shop.json
 	shopJsonFile := LoadShopJsonFile()
 	shopJson := ParseShopJsonFile(shopJsonFile)
@@ -133,5 +119,5 @@ func (p *ProductPgLoader) InitializeProductData() {
 	productsJson := ParseProductJsonFile(productJsonFile)
 
 	// Prepare and create product in product.json into postgres db
-	p.prepareProductsJson(productsJson.Products, shops)
+	p.prepareProductsJson(productsJson.Products, shops, minioClient, bucketName)
 }
