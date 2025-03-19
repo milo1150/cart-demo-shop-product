@@ -13,7 +13,12 @@ if [ -f "$ENV_FILE" ]; then
     # - Ensures export VAR=value works properly.
     # export $(...)
     # -  Loads all key-value pairs into environment variables.
-    export $(grep -v '^#' "$ENV_FILE" | xargs)
+    # export $(grep -v '^#' "$ENV_FILE" | xargs)
+
+    # Ensure only valid lines are exported
+    set -a # Automatically export variables
+    . "$ENV_FILE"
+    set +a # Stop automatically exporting variables
     echo "Loaded env from $ENV_FILE"
 else
     echo ".env file not found at $ENV_FILE"
