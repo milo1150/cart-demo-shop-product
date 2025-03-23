@@ -29,7 +29,6 @@ func main() {
 
 	// Migrate postgres
 	database.RunAutoMigrate(gormDB)
-	database.RunMigrate(gormDB)
 
 	// Connect Minio
 	minio := database.ConnectMinioDatabase()
