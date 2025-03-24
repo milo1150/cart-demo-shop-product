@@ -22,6 +22,7 @@ type Product struct {
 
 	// Relation
 	ShopID uint `json:"shop_id" gorm:"default:null;constraint:OnDelete:SET NULL"`
+	Shop   Shop `json:"shop"`
 
 	//TODO: ProductCategory []ProductCategory `gorm:"many2many:product_categories"`
 

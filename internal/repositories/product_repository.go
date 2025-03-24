@@ -93,7 +93,7 @@ func (p *ProductRepository) GetProducts(payload schemas.GetProducts) (*[]models.
 		ordered = "RANDOM()"
 	}
 
-	query := p.DB.Order(ordered).Find(&products)
+	query := p.DB.Preload("Shop").Order(ordered).Find(&products)
 
 	if query.Error != nil {
 		return nil, query.Error
