@@ -11,7 +11,7 @@ type StockRepository struct {
 	DB *gorm.DB
 }
 
-func (s *StockRepository) CreateStock(payload *schemas.UpdateProductStockSchema, productId uint) (*models.Stock, error) {
+func (s *StockRepository) CreateStock(payload schemas.UpdateProductStockPayload, productId uint) (*models.Stock, error) {
 	newStock := &models.Stock{
 		Amount:    payload.Amount,
 		ProductID: productId,

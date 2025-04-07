@@ -12,7 +12,7 @@ import (
 )
 
 func UpdateProductStockHandler(c echo.Context, appState *types.AppState) error {
-	payload := &schemas.UpdateProductStockSchema{}
+	payload := &schemas.UpdateProductStockSlicesPayload{}
 	if err := c.Bind(payload); err != nil {
 		return c.JSON(http.StatusBadRequest, cartpkg.GetSimpleErrorMessage(err.Error()))
 	}
