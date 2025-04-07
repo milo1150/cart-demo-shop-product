@@ -3,14 +3,11 @@ package dto
 import (
 	"shop-product-service/internal/models"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type ProductDTO struct {
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	Uuid        uuid.UUID `json:"uuid"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Price       float32   `json:"price"`
@@ -22,7 +19,6 @@ func TransformProductDTO(productModel *models.Product) ProductDTO {
 	product := ProductDTO{
 		CreatedAt:   productModel.CreatedAt,
 		UpdatedAt:   productModel.UpdatedAt,
-		Uuid:        productModel.Uuid,
 		Name:        productModel.Name,
 		Description: productModel.Description,
 		Price:       productModel.Price,

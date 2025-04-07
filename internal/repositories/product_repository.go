@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"shop-product-service/internal/models"
 	"shop-product-service/internal/schemas"
 
@@ -68,18 +69,18 @@ func (p *ProductRepository) CreateProduct(payload schemas.CreateProductSchema) e
 	return nil
 }
 
-func (p *ProductRepository) UpdateProductStock(productId uint, amount uint) (*models.Product, error) {
-	product := &models.Product{}
+func (p *ProductRepository) UpdateProductStock(productId uint, amount uint) error {
+	result := p.DB.Model(&models.Product{}).Where("id = ?", productId).UpdateColumn("stock", amount)
 
-	if err := p.DB.Model(&models.Product{}).Where("id = ?", productId).UpdateColumn("stock", amount).Error; err != nil {
-		return nil, err
+	if result.Error != nil {
+		return result.Error
 	}
 
-	if err := p.DB.First(product, productId).Error; err != nil {
-		return nil, err
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no product found with ID %d to update stock", productId)
 	}
 
-	return product, nil
+	return nil
 }
 
 func (p *ProductRepository) GetProducts(payload schemas.GetProducts) (*[]models.Product, error) {
