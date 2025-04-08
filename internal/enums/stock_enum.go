@@ -3,16 +3,16 @@ package enums
 type StockAction string
 
 const (
-	IncreaseStock StockAction = "INC"
-	DecreaseStock StockAction = "DESC"
+	IncreaseStock StockAction = "inc"
+	DecreaseStock StockAction = "dec"
 )
 
 func (s StockAction) ToString() string {
 	switch s {
 	case IncreaseStock:
-		return "INC"
+		return "inc"
 	case DecreaseStock:
-		return "DESC"
+		return "dec"
 	default:
 		return ""
 	}
