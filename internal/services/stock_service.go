@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"shop-product-service/internal/dto"
+	"shop-product-service/internal/enums"
 	"shop-product-service/internal/repositories"
 	"shop-product-service/internal/schemas"
 
@@ -13,42 +14,55 @@ type StockService struct {
 	DB *gorm.DB
 }
 
-func (s *StockService) UpdateProductStockService(payload *schemas.UpdateProductStockSlicesPayload) (*[]dto.ProductDTO, error) {
-	var updatedProductsDTO []dto.ProductDTO
+func (s *StockService) CalculateNewStock(action enums.StockAction, currentStock, amount uint) uint {
+	if action == enums.DecreaseStock && amount > currentStock {
+		return 0
+	}
+	if action == enums.IncreaseStock {
+		return currentStock + amount
+	}
+	if action == enums.DecreaseStock {
+		return currentStock - amount
+	}
+	return 0
+}
+
+func (s *StockService) UpdateProductStock(payload *schemas.UpdateProductStockSlicesPayload) (*[]dto.ProductDTO, error) {
+	var updatedProducts []dto.ProductDTO
 
 	// Begin transaction with panic handler
 	err := s.DB.Transaction(func(tx *gorm.DB) error {
 		// Init repositories DB with tx
-		productRepository := repositories.ProductRepository{DB: tx}
-		stockRepository := repositories.StockRepository{DB: tx}
+		productRepo := repositories.ProductRepository{DB: tx}
+		stockRepo := repositories.StockRepository{DB: tx}
 
 		for _, stockPayload := range payload.Stocks {
 			// Find product by id
-			product, err := productRepository.FindProductByID(stockPayload.ProductId)
+			product, err := productRepo.FindProductByID(stockPayload.ProductId)
 			if err != nil {
 				return err
 			}
 
 			// Calculate new product stock
-			newProductStock := product.Stock + stockPayload.Amount
+			newStock := s.CalculateNewStock(stockPayload.Action, product.Stock, stockPayload.Amount)
 
 			// Update Product stock (DB)
-			err = productRepository.UpdateProductStock(product.ID, newProductStock)
+			err = productRepo.UpdateProductStock(product.ID, newStock)
 			if err != nil {
 				return err
 			}
 
 			// Update Product stock (Exists query)
-			product.Stock = newProductStock
+			product.Stock = newStock
 
 			// Create Stock log
-			_, err = stockRepository.CreateStock(stockPayload, product.ID)
+			_, err = stockRepo.CreateStock(stockPayload, product.ID)
 			if err != nil {
 				return fmt.Errorf("failed to create stock: %w", err)
 			}
 
 			// Transform response product
-			updatedProductsDTO = append(updatedProductsDTO, dto.TransformProductDTO(product))
+			updatedProducts = append(updatedProducts, dto.TransformProductDTO(product))
 		}
 
 		// Commit transaction
@@ -59,5 +73,5 @@ func (s *StockService) UpdateProductStockService(payload *schemas.UpdateProductS
 		return nil, err
 	}
 
-	return &updatedProductsDTO, nil
+	return &updatedProducts, nil
 }

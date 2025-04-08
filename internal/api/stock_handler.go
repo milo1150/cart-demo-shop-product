@@ -5,6 +5,7 @@ import (
 	"shop-product-service/internal/schemas"
 	"shop-product-service/internal/services"
 	"shop-product-service/internal/types"
+	"shop-product-service/internal/validators"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -17,14 +18,16 @@ func UpdateProductStockHandler(c echo.Context, appState *types.AppState) error {
 		return c.JSON(http.StatusBadRequest, cartpkg.GetSimpleErrorMessage(err.Error()))
 	}
 
+	// Validate payload
 	validate := validator.New()
+	validate.RegisterValidation("stock_action", validators.StockActionValidator)
 	if err := cartpkg.ValidateJsonPayload(validate, payload); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	stockService := services.StockService{DB: appState.DB}
 
-	result, err := stockService.UpdateProductStockService(payload)
+	result, err := stockService.UpdateProductStock(payload)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, cartpkg.GetSimpleErrorMessage(err.Error()))
 	}

@@ -6,6 +6,7 @@ import (
 )
 
 type ProductDTO struct {
+	Id          uint      `json:"id"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 	Name        string    `json:"name"`
@@ -17,6 +18,7 @@ type ProductDTO struct {
 
 func TransformProductDTO(productModel *models.Product) ProductDTO {
 	product := ProductDTO{
+		Id:          productModel.ID,
 		CreatedAt:   productModel.CreatedAt,
 		UpdatedAt:   productModel.UpdatedAt,
 		Name:        productModel.Name,
