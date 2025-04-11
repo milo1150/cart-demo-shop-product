@@ -15,22 +15,27 @@ type StockService struct {
 }
 
 func (s *StockService) CalculateNewStock(action enums.StockAction, currentStock, amount uint) uint {
-	if action == enums.DecreaseStock && amount > currentStock {
-		return 0
-	}
-	if action == enums.IncreaseStock {
+	switch action {
+	case enums.IncreaseStock:
 		return currentStock + amount
-	}
-	if action == enums.DecreaseStock {
+
+	case enums.DecreaseStock:
+		if action == enums.DecreaseStock && amount > currentStock {
+			return 0
+		}
+
 		return currentStock - amount
-	}
-	if action == enums.UpdateStock && amount <= 0 {
+
+	case enums.UpdateStock:
+		if action == enums.UpdateStock && amount <= 0 {
+			return 0
+		}
+
+		return amount
+
+	default:
 		return 0
 	}
-	if action == enums.UpdateStock {
-		return amount
-	}
-	return 0
 }
 
 func (s *StockService) UpdateProductStock(payload *schemas.UpdateProductStockSlicesPayload) (*[]dto.ProductDTO, error) {
