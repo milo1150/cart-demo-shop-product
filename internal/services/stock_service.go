@@ -24,6 +24,12 @@ func (s *StockService) CalculateNewStock(action enums.StockAction, currentStock,
 	if action == enums.DecreaseStock {
 		return currentStock - amount
 	}
+	if action == enums.UpdateStock && amount <= 0 {
+		return 0
+	}
+	if action == enums.UpdateStock {
+		return amount
+	}
 	return 0
 }
 

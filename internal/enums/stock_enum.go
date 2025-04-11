@@ -5,6 +5,7 @@ type StockAction string
 const (
 	IncreaseStock StockAction = "inc"
 	DecreaseStock StockAction = "dec"
+	UpdateStock   StockAction = "update"
 )
 
 func (s StockAction) ToString() string {
@@ -13,6 +14,8 @@ func (s StockAction) ToString() string {
 		return "inc"
 	case DecreaseStock:
 		return "dec"
+	case UpdateStock:
+		return "update"
 	default:
 		return ""
 	}
@@ -20,7 +23,7 @@ func (s StockAction) ToString() string {
 
 func (s StockAction) IsValid() bool {
 	switch s {
-	case IncreaseStock, DecreaseStock:
+	case IncreaseStock, DecreaseStock, UpdateStock:
 		return true
 	default:
 		return false
