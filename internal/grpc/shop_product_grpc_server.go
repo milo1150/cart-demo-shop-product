@@ -40,13 +40,18 @@ func (s *ShopProductServer) GetProduct(_ context.Context, payload *pb.GetProduct
 		return nil, err
 	}
 
+	shopDetail := &pb.ShopDetail{
+		Id:   uint64(product.Shop.ID),
+		Name: product.Shop.Name,
+	}
+
 	res := &pb.GetProductResponse{
 		Id:          uint64(product.ID),
 		Name:        product.Name,
 		Description: product.Description,
 		Price:       float64(product.Price),
 		Stock:       uint64(product.Stock),
-		ShopId:      uint64(product.ShopID),
+		Shop:        shopDetail,
 	}
 
 	return res, nil
@@ -62,13 +67,18 @@ func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProduc
 
 	res := &pb.GetProductsResponse{Products: []*pb.GetProductResponse{}}
 	for _, product := range *products {
+		shopDetail := &pb.ShopDetail{
+			Id:   uint64(product.Shop.ID),
+			Name: product.Shop.Name,
+		}
+
 		productRes := &pb.GetProductResponse{
 			Id:          uint64(product.ID),
 			Name:        product.Name,
 			Description: product.Description,
 			Price:       float64(product.Price),
 			Stock:       uint64(product.Stock),
-			ShopId:      uint64(product.ShopID),
+			Shop:        shopDetail,
 		}
 		res.Products = append(res.Products, productRes)
 	}

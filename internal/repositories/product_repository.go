@@ -47,7 +47,7 @@ func (p *ProductRepository) FindProductByID(productId uint) (*models.Product, er
 
 func (p *ProductRepository) FindProductsByIDs(productIds []uint64) (*[]models.Product, error) {
 	products := &[]models.Product{}
-	if err := p.DB.Where("id IN ?", productIds).Find(products).Error; err != nil {
+	if err := p.DB.Preload("Shop").Where("id IN ?", productIds).Find(products).Error; err != nil {
 		return nil, err
 	}
 	return products, nil
