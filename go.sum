@@ -68,6 +68,8 @@ github.com/milo1150/cart-demo-proto v1.0.5 h1:Um+zCA1OVi1NeNUcJa5pnpOhOFUz+I2LTJ
 github.com/milo1150/cart-demo-proto v1.0.5/go.mod h1:ypgJ4BfNhQ6oZ6CCbBP1eaaDa1EOEtf8xQTGFIguQ4Y=
 github.com/milo1150/cart-demo-proto v1.0.6 h1:cjrfe1KpNCi5xCev3Q6NXA4/QlDcxTs9hbP+Phf6HrM=
 github.com/milo1150/cart-demo-proto v1.0.6/go.mod h1:ypgJ4BfNhQ6oZ6CCbBP1eaaDa1EOEtf8xQTGFIguQ4Y=
+github.com/milo1150/cart-demo-proto v1.0.7 h1:QLlzC0JlZoXYbg67KkgJG2tIWU6AzFWmvtu2l8/t4ns=
+github.com/milo1150/cart-demo-proto v1.0.7/go.mod h1:ypgJ4BfNhQ6oZ6CCbBP1eaaDa1EOEtf8xQTGFIguQ4Y=
 github.com/minio/crc64nvme v1.0.1 h1:DHQPrYPdqK7jQG/Ls5CTBZWeex/2FMS3G5XGkycuFrY=
 github.com/minio/crc64nvme v1.0.1/go.mod h1:eVfm2fAzLlxMdUGc0EEBGSMmPwmXD5XiNRpnu9J3bvg=
 github.com/minio/md5-simd v1.1.2 h1:Gdi1DZK69+ZVMoNHRXJyNcxrMA4dSxoYHZSQbirFg34=

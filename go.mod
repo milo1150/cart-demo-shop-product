@@ -10,7 +10,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/milo1150/cart-demo-pkg v1.0.6
-	github.com/milo1150/cart-demo-proto v1.0.6
+	github.com/milo1150/cart-demo-proto v1.0.7
 	github.com/minio/minio-go/v7 v7.0.90
 	github.com/samber/lo v1.49.1
 	go.uber.org/zap v1.27.0

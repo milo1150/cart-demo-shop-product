@@ -7,6 +7,7 @@ import (
 	"shop-product-service/internal/repositories"
 	"shop-product-service/internal/types"
 
+	"github.com/davecgh/go-spew/spew"
 	pb "github.com/milo1150/cart-demo-proto/pkg/shop_product"
 	"google.golang.org/grpc"
 )
@@ -52,6 +53,7 @@ func (s *ShopProductServer) GetProduct(_ context.Context, payload *pb.GetProduct
 		Price:       float64(product.Price),
 		Stock:       uint64(product.Stock),
 		Shop:        shopDetail,
+		Image:       product.ImageUrl,
 	}
 
 	return res, nil
@@ -72,6 +74,8 @@ func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProduc
 			Name: product.Shop.Name,
 		}
 
+		spew.Dump(product)
+
 		productRes := &pb.GetProductResponse{
 			Id:          uint64(product.ID),
 			Name:        product.Name,
@@ -79,6 +83,7 @@ func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProduc
 			Price:       float64(product.Price),
 			Stock:       uint64(product.Stock),
 			Shop:        shopDetail,
+			Image:       product.ImageUrl,
 		}
 		res.Products = append(res.Products, productRes)
 	}
