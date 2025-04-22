@@ -26,9 +26,6 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL}
-    # ports:
-    #   - '9000:9000' # MinIO API port
-    #   - '9001:9001' # MinIO Web UI
     expose:
       - '9000' # MinIO API port
       - '9001' # MinIO Web UI
@@ -73,19 +70,11 @@ services:
       - cart-demo
 
   app:
-    # Disable custom container_name for horizontal scale
-    # container_name: go-app-shop-product
     build:
       context: ../../
-      dockerfile: deployments/dev/Dockerfile
-    # No need ports, accept route from traefik only
-    # ports:
-    #   - 8083:1323
+      dockerfile: deployments/prd/Dockerfile
     expose:
       - 1323
-    volumes:
-      # Important to bind/mount codebase dir to /app dir for live reload
-      - ../../:/app
     depends_on:
       postgres-shop-product:
         condition: service_healthy

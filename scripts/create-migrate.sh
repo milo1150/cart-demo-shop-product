@@ -1,6 +1,3 @@
-# Example
-# migrate create -ext sql -dir ../internal/database/migrations -seq create_users_table
-
 #!/bin/bash
 
 # Check if migration name is provided
