@@ -53,10 +53,7 @@ func (m *MinIO) CreateBucket(bucketName string) {
 // True if file already exists
 func (m *MinIO) FileExists(bucketName, objectName string) bool {
 	_, err := m.Client.StatObject(m.Context, bucketName, objectName, minio.GetObjectOptions{})
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func (m *MinIO) UploadFile(bucketName, objectName, filePath, contentType string, log *zap.Logger) {
