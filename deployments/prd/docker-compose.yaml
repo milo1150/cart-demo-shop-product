@@ -71,7 +71,7 @@ services:
 
   shop-product-service:
     build:
-      context: ../../
+      context: ${APP_BUILD_CONTEXT}
       dockerfile: deployments/prd/Dockerfile
     expose:
       - 1323
