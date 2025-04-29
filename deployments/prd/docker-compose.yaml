@@ -69,7 +69,7 @@ services:
     networks:
       - cart-demo
 
-  app:
+  shop-product-service:
     build:
       context: ../../
       dockerfile: deployments/prd/Dockerfile
