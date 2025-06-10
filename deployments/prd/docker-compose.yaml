@@ -61,7 +61,7 @@ services:
     entrypoint: >
       /bin/sh -c "
       sleep 5;
-      mc alias set local http://${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      mc alias set local https://${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       mc mb local/${MINIO_PUBLIC_BUCKET_NAME};
       mc anonymous set public local/${MINIO_PUBLIC_BUCKET_NAME};
       exit 0;
