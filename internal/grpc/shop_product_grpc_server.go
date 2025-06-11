@@ -60,11 +60,13 @@ func (s *ShopProductServer) GetProduct(_ context.Context, payload *pb.GetProduct
 
 func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProductsRequest) (*pb.GetProductsResponse, error) {
 	productRepository := repositories.ProductRepository{DB: s.AppState.DB}
+	log.Println("gRPC - GetProducts payload:", payload)
 
 	products, err := productRepository.FindProductsByIDs(payload.ProductIds)
 	if err != nil {
 		return nil, err
 	}
+	log.Println("gRPC - GetProducts length:", len(*products))
 
 	res := &pb.GetProductsResponse{Products: []*pb.GetProductResponse{}}
 	for _, product := range *products {
@@ -84,6 +86,7 @@ func (s *ShopProductServer) GetProducts(_ context.Context, payload *pb.GetProduc
 		}
 		res.Products = append(res.Products, productRes)
 	}
+	log.Println("gRPC - GetProducts result length:", len(res.Products))
 
 	return res, nil
 }
