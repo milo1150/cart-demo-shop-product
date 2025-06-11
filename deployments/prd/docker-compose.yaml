@@ -49,26 +49,6 @@ services:
     networks:
       - cart-demo
 
-  minio-init:
-    image: minio/mc
-    depends_on:
-      - minio-shop-product
-    environment:
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - MINIO_PUBLIC_BUCKET_NAME=${MINIO_PUBLIC_BUCKET_NAME}
-    entrypoint: >
-      /bin/sh -c "
-      sleep 5;
-      mc alias set local https://${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      mc mb local/${MINIO_PUBLIC_BUCKET_NAME};
-      mc anonymous set public local/${MINIO_PUBLIC_BUCKET_NAME};
-      exit 0;
-      "
-    networks:
-      - cart-demo
-
   shop-product-service:
     build:
       context: ${APP_BUILD_CONTEXT}

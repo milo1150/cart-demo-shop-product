@@ -26,9 +26,6 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_BROWSER_REDIRECT_URL: ${MINIO_BROWSER_REDIRECT_URL}
-    # ports:
-    #   - '9000:9000' # MinIO API port
-    #   - '9001:9001' # MinIO Web UI
     expose:
       - '9000' # MinIO API port
       - '9001' # MinIO Web UI
@@ -49,26 +46,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - cart-demo
-
-  minio-init:
-    image: minio/mc
-    depends_on:
-      - minio-shop-product
-    environment:
-      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-      - MINIO_PUBLIC_BUCKET_NAME=${MINIO_PUBLIC_BUCKET_NAME}
-    entrypoint: >
-      /bin/sh -c "
-      sleep 5;
-      mc alias set local http://${MINIO_ENDPOINT} ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
-      mc mb local/${MINIO_PUBLIC_BUCKET_NAME};
-      mc anonymous set public local/${MINIO_PUBLIC_BUCKET_NAME};
-      exit 0;
-      "
     networks:
       - cart-demo
 

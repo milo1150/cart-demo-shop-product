@@ -80,3 +80,41 @@ func (m *MinIO) GetPublicURLWithExpireDate(bucketName, objectName string, expire
 
 	return fmt.Sprintf("%s%s?%s", m.ApiURL, presignedUrl.Path, presignedUrl.RawQuery)
 }
+
+func CreatePublicBucket(client *minio.Client, bucketName string) {
+	ctx := context.Background()
+	location := "us-east-1"
+
+	// Create the bucket if it doesn't exist
+	exists, errBucketExists := client.BucketExists(ctx, bucketName)
+	if errBucketExists != nil {
+		log.Fatalln(errBucketExists)
+	}
+	if !exists {
+		err := client.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{Region: location})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		log.Printf("Successfully created %s\n", bucketName)
+	}
+
+	// Set public read-only policy on the bucket
+	policy := `{
+	    "Version": "2012-10-17",
+	    "Statement": [
+	        {
+	            "Effect": "Allow",
+	            "Principal": "*",
+	            "Action": ["s3:GetObject"],
+	            "Resource": ["arn:aws:s3:::` + bucketName + `/*"]
+	        }
+	    ]
+	}`
+
+	err := client.SetBucketPolicy(ctx, bucketName, policy)
+	if err != nil {
+		log.Fatalln("Error setting bucket policy:", err)
+	}
+
+	log.Println("Bucket is now public!")
+}

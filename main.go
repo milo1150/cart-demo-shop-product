@@ -30,13 +30,14 @@ func main() {
 	// Migrate postgres
 	database.RunAutoMigrate(gormDB)
 
-	// Connect Minio
+	// Init MinIO
 	minio := database.ConnectMinioDatabase()
-
-	// Init Minio connection
 	minioApiURL := os.Getenv("MINIO_API_URL")
 	publicBucketName := os.Getenv("MINIO_PUBLIC_BUCKET_NAME")
 	minioClient := database.MinIO{Client: minio, Context: ctx, ApiURL: minioApiURL, Log: logger}
+
+	// Init MinIO Bucket
+	database.CreatePublicBucket(minioClient.Client, publicBucketName)
 
 	// Init Minio product images
 	productMinioLoader := loaders.ProductMinIOLoader{Log: logger, Client: minio, Ctx: ctx}
